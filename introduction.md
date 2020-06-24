@@ -312,3 +312,136 @@ Exemplos:
 - Web Application Firewall (WAF):
 
 	Firewall aplicação web que fica na frente de website para prover proteção adicional contra ataques comuns de **SQL INJECTION** e **cross-site scripting**. Tem diferentes conjunto de regras que podem ser usados em diferentes aplicações.
+
+
+### AWS Developer Tools
+- Cloud 9:
+
+	Ambiente de desenvolvimento integrado (IDE) rodando na cloud aws que permite fazer deploy de servidores diretamente para aws de IDE.
+
+- CodeStar:
+
+	Torna fácil desenvolver e disponibilizar aplicações na aws pode gerenciar todo pipeline de CI/CD. Tem um gerenciador de projetos incluindo issue tracking provido por Atlassian JIRA Software.
+
+- X-Ray:
+
+	Torna fácil analisar e debugar aplicações isto permite um melhor entendimento de performance da aplicação e serviços ligados.
+
+- CodeCommit:
+
+	É um repositório git parecido com github e está rodando na cloud aws.
+
+- CodePipeline:
+
+	É integração e distribuição contínua (CI/CD). Pode criar o build, testar e deployar cada vez que o código é modificado.
+
+- CodeBuild:
+
+	Compila código fonte, roda testes e produz pacotes de software que estão prontos para ser deployados na aws.
+
+- CodeDeploy:
+
+	Serviço que automatiza disponibilização de software para uma variedade de serviços computacionais incluindo: **ec2, AWS lambda** e até instấncias que estão rodando localmente.
+
+
+### AWS Media Services
+- Elemental MediaConvert:
+
+	É um serviço de transcodificação video baseado em texto para converter formatos de video sob demanda.
+
+- Elemental MediaPackage:
+
+	Prepara conteúdos de video para distribuição através da internet também  protege contra privacidade através de gerenciamento de direitos autorais.
+
+- Elemental MediaTailor:
+
+	Insere individualmente propagandas personalizadas em conteúdos de video
+
+- Elemental MediaLive:
+
+	Serviço de video ao vivo para transmissão de vídeo na internet.
+
+- Elemental MediaStore:
+
+	Serviço de armazenamento na cloud aws otimizado para multimídia.
+
+- Kinesis Video Streams:
+
+	Transmissão de videos de dispositivos conectados através da cloud aws para análise e estudos de máquina e outras aplicações de processamento.
+
+
+### Mobile Services
+- AWS Mobile Hub:
+
+	Permite facilmente configurar serviços aws para dispositivos mobile em um lugar este gera cloud configuração que salva informação sobre os serviços configurados.
+
+- AWS Device Farm:
+
+	É um serviço de testes para (iOS, Android e web-apps) permite testar aplicativo contra uma grande coleção de dispositivos físicosna cloud aws.
+
+- AWS AppSync
+
+	GraphQL backend para dispositivos móveis e aplicações web.
+
+
+### AWS Migration Services
+- AWS Application Discovery Service:
+
+	O serviço de descoberta de aplicativos reúne informações sobre a empresa data centers locais para ajudar a migração para os dados aws, dados são retidos em um formato criptografado em um serviço de discoberta.
+
+- AWS Database Migration Service:
+
+	Orquestra a migração de bancos de dados através da cloud aws também permite a migração de de um tipo de banco para outro totalmente diferente: Ex migrar Oracle  para AWS Aurora.
+
+- AWS Server Migration Service:
+
+	Pode automatizar a migração de milhares de cargas de trabalho locais para cloud aws reduzindo custos e minimiza tempo e inatividade para migrações.
+
+- AWS Snowball:
+
+	Dispositivo portátil de armazenamento extensível petabyte pode ser usado para migração de ambientes locais para cloud aws.
+
+### Business Productivity & App Streaming
+- Amazon WorkDocs:
+
+	Serviço completamente gerenciado seguro de colaboração e gerenciamento de arquivos na cloud aws. O cliente web permite visualizar e comentar em mais de 35 tipos de arquivo diferente inluindo microsoft office e pdf.
+
+- Amazon WorkMail:
+
+	Serviço seguro gerenciado email e calendário empresarial.
+
+- Amazon Chime:
+
+	Serviço de conferência Online, bom para empresas, reuniões online, video conferências, chamadas e compartilhamento de conteúdo de dentro e fora da empresa.
+
+- Amazon WorkSpaces:
+
+	Serviço completamente gerenciado seguro "desktop as service" pode de maneira fácil ter um desktop windows ou linux.
+
+- Amazon AppStream 2.0:
+
+	Serviço de transmissão completamente gerenciado permite a transmissão de desktops aws para navegador compatível com html5, é bom para usurios que querem acessar suas aplicações de qualquer lugar.
+
+
+### Internet of Things (IoT)
+- AWS IOT:
+
+	Plataforma gerenciada na nuvem que permite embutir dispositivos como microcontroladores e Raspberry Pi, para com segurnaça interagir com a nuvem.
+
+-  Amazon FreeRTOS:
+
+	Sistema operacional para microcontroladores como o microhip pic32 que permite dispositivos de baixo custo e baixa energia conectar com aws IoT.
+
+-  AWS Greengras:
+
+	Software que permite rodar localmente funções aws lambda e sincronização e armazenamento em cache de dados de mensagens de aplicações de machine learning em dispositivos conectados IoT.
+
+
+### Game Development
+- Amazon Gamelift:
+
+	Permite gerenciar, extender e disponibilizar servidores dedicados na cloud aws.
+
+- Amazon Lumberyard:
+
+	Ambiente de desenvolvimento de jogos e multiplataforma triple-a engine na cloud aws.
