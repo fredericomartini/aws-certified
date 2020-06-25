@@ -445,3 +445,52 @@ Exemplos:
 - Amazon Lumberyard:
 
 	Ambiente de desenvolvimento de jogos e multiplataforma triple-a engine na cloud aws.
+
+
+## AWS Command LIne Interface (cli)
+![Cli example 1](./img/aws-command-line-interface-ex-1.png)
+
+![Cli example 2](./img/aws-api-ex2.png)
+
+![Cli example 3](./img/aws-api-ex3.png)
+
+![Cli example 4](./img/aws-api-ex4.png)
+
+![Cli example 5](./img/aws-api-ex5.png)
+
+![Cli example 6](./img/aws-api-ex6.png)
+
+
+## CLI Lab
+- Criar ambiente Cloud9
+- Criar bucket s3 usando linha de comando
+- Upload e delete de objeto
+- Remoção de bucket
+
+
+### Elastic Beanstalk
+Serviço de deploy que permite disponibilizar aplicações para arquiteturas complexas na aws sem ter que se preocupar sobre a camada por trás.
+
+- Laucnhed in 2011
+- Quichly deploy and manage applications on environments
+- Automatically handles **capacity** provisioning, **load balancing, scaling**, and application **helth monitoring.**
+- New versions can be uploaded through the **console** or **CLI** and, environment re-deployed.
+
+	- Applications can be:
+
+		- Docker Containers
+		- NodeJS, Java, .NET, PHP, Ruby, Python & Go.
+		- On servers such as Apache, Nginx, Passenger, and IIS.
+
+![Beanstalk example 1](./img/benstalk-workflow-ex1.png)
+
+### O que é uma arquitetura de alta disponibilidate e tolerante a falhas ?
+![Fault tolerance example 1](./img/fault-tolerance-ex1.png)
+
+
+#### Deployment options:
+
+- All at once,
+- Rolling (a batch at a time), Rolling with additional batch,
+- Immutable (two environments temporarily),
+- Blue - Green (two environments).
