@@ -301,6 +301,12 @@ Exemplos:
 
 	Serviço automatizado de avaliação de segurança, pode ajudar a encontrar falhas ou áreas para melhorar em uma conta aws.
 
+	- Assistente de segurança automático
+	- Reduz custo e aumenta efetividade de assistência e conformidade
+	- Preço inicia em $ 0.30 por agente-assistente por mês utilizando desconto de volume é possível atingir um valor mímino de $ 0.05 por agente-assistente por mês.
+
+
+
 - Key Management Service (KMS):
 
 	Torna fácil criar e controlar chaves criptográficas para dados criptografados também usa módulos de segurança de hardware para  suas chaves Tem boa integração com serviços como: S3, Redshift e EBS.
@@ -494,3 +500,38 @@ Serviço de deploy que permite disponibilizar aplicações para arquiteturas com
 - Rolling (a batch at a time), Rolling with additional batch,
 - Immutable (two environments temporarily),
 - Blue - Green (two environments).
+
+
+### Business Case for AWS
+
+#### 6 Vantagens da computação em nuvem
+- Troca de custo alto por custo variável
+- Benefícios de grande economia de escala
+- Parar de adivinhar capacidades
+- Aumentar velocidade e agilidade
+- Parar de gastar dinheiro rodando e mantendo servidores
+- Ser global em minutos
+
+### AWS Compliance Program
+
+- Cobre uma grande variedade de certificações, leis e regulações e frameworks que aws está em conformidade ou pode ajudar para ter conformidade em.
+
+![Compliante vs Compliance example 1](./img/compliant-vs-compliance-ex1.png	)
+
+### AWS Artifact
+
+- Repositório central de informações relacionadas conformidades.
+- Acesso sob demanda para segurança e relatórios de conformidade e seleção online de acordos ex:
+	- Service Organization Control (SOC)
+	- Payment Card Industry (PCI)
+- Acessado através do AWS Management Console
+
+
+![AWS Config example 1](./img/aws-config-ex1.png)
+
+### AWS Architecture and Compliance
+
+- O centro de arquitetura AWS provê uma coleção de recursos técnicos para ajudar a construir mais eficaz e eficiente na cloud aws. https://aws.amazon.com/architecture
+
+- AWS Well-Architected: https://aws.amazon.com/architecture/well-architected/
+- Compliance: https://aws.amazon.com/compliance
