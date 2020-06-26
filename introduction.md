@@ -535,3 +535,43 @@ Serviço de deploy que permite disponibilizar aplicações para arquiteturas com
 
 - AWS Well-Architected: https://aws.amazon.com/architecture/well-architected/
 - Compliance: https://aws.amazon.com/compliance
+
+
+### Entregando websites HTML5 a prova de balas com Amazon Web Services
+- Comprar um nome de domínio (através de Route53)
+- Upload site aws s3
+- Ativar s3 hospedagem de site
+- Encriptação HTTP/SSL
+- Roteamento de tráfego com Route 53
+- Criar uma distribuição CloudFront
+
+![What it looks like example 1](./img/what-it-looks-like-ex1.png)
+
+### Steps para liberar um site para ser público no S3
+
+- 1 Criar um bucket para o site (melhor nomenclatura do bucket próprio domínio) [Console](https://s3.console.aws.amazon.com/s3/home?region=us-east-1)
+
+	- 1.1 Desmarcar opção para bloquear todo conteúdo.
+		- 1.1.2 Copirar código (ARN) do bucket
+	- 1.2 Entrar nas configurações do bucket **Permissions** e depois **Bucket Policy**
+	- 1.3 Gerar políticas de privacidade. [link](https://awspolicygen.s3.amazonaws.com/policygen.html)
+
+		- 1.3.1 Select type of policy => S3 Bucket Policy
+		- 1.3.2 Principal => *
+		- 1.3.3 AWS Service S3
+		- 1.3.4 Actions => GetObject
+		- 1.3.5 Colar o código (ARN) e adicionar **/\*** para permitir acesso a tudo após raiz
+		- 1.3.6 Add Statement
+		- 1.3.7 Add Generate Policy
+		- 1.3.8 Copiar json de policy gerado e colar na tela aberta no step **1.2** e salvar.
+
+		OBS: Deverá mostrar a msg: **This bucket has public access**
+- 2 Fazer upload dos arquivos estáticos para o s3
+
+	- 2.1 Na aba de permissões deixar acesso de leitura público
+	- 2.2 Storage class => Standard
+
+- 3 Permitir que bucket seja utilizado como website estático
+	- 3.1 Properties => Static website hosting, **Use this bucket to host a website** e informar o nome do arquivo index.
+
+### Steps para criação de certificados SSL
