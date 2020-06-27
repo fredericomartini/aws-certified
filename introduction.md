@@ -656,3 +656,168 @@ Serviço de deploy que permite disponibilizar aplicações para arquiteturas com
 Fazer todos serem redirecionados para: `coddare.com.br`
 
 No bucket criado na parte de wetbsite hosting **Adicionar Redirect requets**
+
+
+### IAM, Organizations E CloudTrail
+
+- AWS Security Shared Responsibility
+![Shared Responsibility example 1](./img/security-shared-responsibility.png)
+
+
+#### What is IAM ?
+
+- A **web service** that allows you to securely control individual and group access to your AWS resources.
+- Create and manage user identities ("**IAM users**") and grant permissions.
+- Features
+
+	- **Shared access** to your AWS account
+	- **Granular** permissions
+	- Secure access to AWS resources for applications that run on **Amazon EC2**
+	- **Identity federation** to grant permissions for users outside of AWS
+	- Payment Card Industry (**PCI**) Data Security Standard (**DDS**) Compliance
+	- Access log auditing using **CloudTrail**
+	- **Eventually** Consistent
+	- **Free** to use
+
+#### Users
+
+- Represent person or service acessing your account
+- Consists of a **name** and **credentials**
+- Users are identified by:
+
+	- A "**friendly name**" eg: **"Bil"**
+	- Amazon Resource Name (**ARN**)
+
+			arm:aws:iam::acccount-ID-withoud-hyphens:user/Bill
+
+	- **Unique Identifier** which is returned only when you use the API, SDKs, Tools for Windows PowerShell, or AWS CLI to create the user.
+
+- Credentials can be associated to a user:
+
+	- **Console password.** User will have aurl link to login to the console.
+	- **Access keys** (access key ID and a secret key), max 2.
+
+- **Never use root user** to access resources unless absolutely essentials. Create admin users with required permissions. Always enable multi-factor authentication of the root user.
+
+
+#### User password Policies
+- You can use a password policy to do these things:
+
+	- Set a minimum password length
+	- Require specific character types.
+	- Allow all IAM users to change their own passwords.
+	- Password expiration.
+	- Prevent users from resusing previous passwords.
+	- Force users to contact an account administrator when the password expired.
+
+
+## Groups
+- **Collection** of IAM users.
+- Users **assume** the permissions of the group.
+- Users can belong to **multiple groups**
+- Groups can only contain users, **cannot be nested**.
+
+![Groups example 1](./img/groups-ex-1.png)
+
+
+## Roles
+- Defined permissions that can be assumed by **users or resources**.
+- Allow **EC2 instances** to access other AWS resources.
+- Grant access to your resources to users in **another AWS account**
+- Can be used to allow users to temporarily assume a role with least privilege access to critial resources.
+**Identity federation** using:
+
+	- AWS Cognito
+	- OAUTH (Facebook, Google eeet)
+	- Enterprise Single Sign On with LDAP or Active Directory
+
+## AWS Organisations
+- Allows multiple AWS accounts used by an organisation to be part of an **Organisational Unit** (OU)
+- **Service Control Policies** (SCPs) allow the whitelisting or blacklisting of service within an Organisational Unit.
+- A **blacklisted** service will not be available even if the IAM user or group policy allows it.
+- Benefits:
+
+	- **Centrally manage** policies across multiple AWS accounts
+	- **Control access** to AWS services
+	- **Automate** AWS account creation and management programmatically with APIs
+	- **Consolidate billing** across multiple AWS accounts
+
+	![Groups example 1](./img/aws-organisations-ex1.png)
+
+## IAM Policies
+ - By default, users cant't access anything in your account
+ - Grant permissions through **policies** that define the effect, actions, resources, and optional conditions.
+
+	```json
+	{
+		"Version": "2012-10-17",
+		"Statement": {
+			"Effect": "Allow",
+			"Action": "dynamodb:*",
+			"Resource": "arn:aws:dynamodb:us-west-2:123456789012:table/Books",
+		}
+	}
+	```
+
+#### Amazon Resource Names (ARN)
+The access policy language requires you to specify the resource or resources using the following Amazon Resource Name (ARN) format:
+
+		arn:aws:iam::account:resource (note region missing)
+
+Examples:
+
+An IAM user in the account: `arn:aws:iam::123456789012:user/Bob`
+
+An IAM group: `arn:aws:iam::123456789012:group/Developers`
+
+An IAM role: `arn:aws:iam::123456789012:role/S3Access`
+
+An instance profile that can be associated with an EC2 instance: `arn:aws:iam::123456789012:instance-profile/Webserver`
+
+A federated user identified an IAM as "Bob": `arn:aws:sts::123456789012:federated-user/Bob`
+
+
+### User-Based vs Resource Based Policies
+- IAM policies (resource-level) are attached to a user, group or role and specify the actions that are permitted and the resource (EC2 instance, RDS database, etc.) that can be accessed.
+- Resource-Based policies (as opossed to IAM policies) are attached to a resource and only available for:
+
+	- Amazon S3 buckets (bucket policies and ACLs),
+	- Amazon Glacier valults (vault access policies),
+	- Amazon SNS topics,
+	- Amazon SQL queues, and
+	- AWS Key Management Service encryption keys.
+
+### Identity Federation
+- An IAM role can be used to specify permissions for externally identified (federated) users.
+- Max 5000 IAM users per account. Identity federation enables unlimited temporary credentials.
+- Identified by your organization or third-party identity provider
+- Methods of federating users:
+
+	- Amazon Cognito (developer authenticated identities, guest access or public identity service provider).
+	- Public identity Service Providers or OpenID Connect (Facebook, Goole, Amazon etc.)
+	- Identity provider software package that supports SAML 2.0 (Security Assertion Markup Language 2.0).
+	- Creating a custom identity broker application that authenticates users (eg. with the enterprise's LDAP or Active Directory service). The application then assumes temporary credentials for the user.
+	- AWS Directory Service for Active Directory and use this for enterprise AWS access.
+
+
+### AWS CloudTrail
+- AWS Management Console, SDK and CLI all use the **AWS API** to communicate to AWS services.
+- AWS can **log calls** to AWS services from the AWS API.
+- Logs are stored in a **bucket** and can be analysed (Amazon Athena, EMR etc).
+- **SNS topic** can alert security issues.
+
+### IAM Best Practices
+- Lock Away Your AWS Account **Root User Access Keys**
+- Create Individual **IAM Users**
+- Use **Groups** to Assingn Permissions to IAM Users
+- Use **AWS Defined Policies** to Assign Permissions Whenever Possible
+- Grant **Least Privilege**
+- Use **Access Levels** to Review IAM Permissions (List, Read, Write, or Permissions management).
+- Configure a Strong **Password Policy** for Your Users
+- Enable **Multi-Factor Authentication (MFA)** for Privileged Users
+- Delegate by Using **Roles** Instead of by Sharing Credentials
+- Use **Roles for Applications** That Run on Amazon EC2 Instances
+- **Rotate Credentials** Regulary
+- Remove **Unnecessary Credentials**
+- Use **Policy Conditions** for Extra Security (eg MFA login)
+- **Monitor** Activity in Your AWS account (eg CloudTrail)
