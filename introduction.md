@@ -574,4 +574,85 @@ Serviço de deploy que permite disponibilizar aplicações para arquiteturas com
 - 3 Permitir que bucket seja utilizado como website estático
 	- 3.1 Properties => Static website hosting, **Use this bucket to host a website** e informar o nome do arquivo index.
 
-### Steps para criação de certificados SSL
+### Criação de certificados SSL com Certificate Manager
+
+- 1 Acessar [Console](https://console.aws.amazon.com/acm/home?region=us-east-1#/firstrun/)
+- 2 Provision certificates => Get started
+
+	- 2.1 Rquest a public certificate => Request a certificate
+
+	Colocando **\*.DOMAIN..** todos os subdomínios vão ter o certificado também.
+
+	![Domain names exemple 1](./img/request-certificate-ex1.png)
+
+	- 2.2 Escolher opção DSN VALIDATION
+
+	- 2.3 Adicionar CNAME no provedor de dns
+
+	![Domain names exemple 2](./img/record-dns-ex1.png)
+
+### Criação de CloudFront Distribution
+- Com ele conteúdo estático de site estará disponível em diversos pontos estratégicos espalhados pelo globo, fazendo com que requests ao conteúdo sejam disponibilizadas do local mais próximo aumentado a velocidade.
+- Reduz custos, pois conteúdo solicitado vai ser menos requisitado do s3.
+- Também provê alguns adicionais de segurança (DDoS).
+- Acessar [Console](https://console.aws.amazon.com/cloudfront/home?region=us-east-1#)
+- Criar uma distribuição
+
+	![Domain names exemple 2](./img/cloudfront.png)
+
+	- Origin Domain Name => mesmo do bucket
+	- Origin Path => não precisa
+	#### Default Cache Behavior Settings
+	- Redirect HTTP to HTTPS
+
+	#### Distribution Settings
+	- Alternate Domain Names (CNAMES) => informar **domínio** e o **www** ex:
+
+			coddare.com.br
+			www.coddare.com.br
+
+	- SSL Certificate => Custom SSL Certificate, selecionar o certificado criado
+
+	![Certificate example 1](./img/certificate-selected.png)
+
+	- Default Root Object => index.html
+
+	- Enable IPv6 => desativado (não necessário)
+	- Comment => nome do domínio => coddare.com.br
+	- Salvar e Aguardar .. demora cerca de 30 min.
+	- Após liberação e replicação para todos os **edge locations**, é necessário garantir que
+	ROUTE 53 está sendo redirecionado para o CloudFront distribution
+
+### Redirecionamento com Route 53
+- Acessar [Console](https://console.aws.amazon.com/route53/home?region=us-east-1)
+- Create Record Set
+
+	![Create Record Set example 1](./img/route-53-create-record-ex1.png)
+- Deve ser criado outro Record set para o **www**
+
+	- Type => CNAME Canonical name
+	- Alias => False
+	- Alinas Value (cloud front dns)
+
+- Existe um site para verificar a propagação do dns acessar através do [Link](https://www.whatsmydns.net/)
+
+### Invalidar dados no CloudFront
+- Como CloudFront tem um ttl de 24 horas, caso novo conteúdo seja disponibilizado, não será atualizado até que esse tempo passe, caso seja necessário, deve ser invalidado CloudFront.
+- Ir na distribuição => Inalidations
+
+![Create Record Set example 1](./img/cloudfront-invalidations.png)
+
+- É possível invalidar arquivos específicos ou todo conteúdo Ex:
+
+		index.html
+		images/*
+
+### Redirecionamento de vários domínios para um só
+
+	- coddare.com
+	- coddare.net
+	- coddare.tech
+
+Fazer todos serem redirecionados para: `coddare.com.br`
+
+No bucket criado na parte de wetbsite hosting **Adicionar Redirect requets**
