@@ -821,3 +821,159 @@ A federated user identified an IAM as "Bob": `arn:aws:sts::123456789012:federate
 - Remove **Unnecessary Credentials**
 - Use **Policy Conditions** for Extra Security (eg MFA login)
 - **Monitor** Activity in Your AWS account (eg CloudTrail)
+
+
+### Identity and Access Management (IAM) Core knowledge
+- Não é necessário colocar permissões direto no usuário, quando for fazer o vínculo entre grupo e usuário, ele herdará as permissões do grupo.
+
+- Para alterações nas políticas de conta acessar [link](https://console.aws.amazon.com/iam/home?region=us-east-1#/account_settings).
+
+
+![Password policy example 1](./img/password-policy-ex1.png)
+
+
+### Criação de regras de acesso
+- [Console](https://console.aws.amazon.com/iam/home?region=us-east-1#/roles)
+- Criação de uma role para ec2 ter comunicação com **CloudWatch**
+
+![Password policy example 1](./img/create-role-ec2-cloudwatch.png)
+
+- Alterar alias do account (Dashboard)
+
+![Dashboard alias example 1](./img/dashboard-console-customize.png)
+
+
+### Credential Report
+![Dashboard Credential report example 1](./img/credential-report-ex1.png)
+
+
+### Trusted Adviser
+- Serviço de verificação e otimização para diversas áreas/serviços
+
+	- Coast Optimization
+	- Performance
+	- Security
+	- Fault Tolerance
+	- Service Limits
+
+- Com base no plano existem diferentes coberturas no serviço.
+
+
+## EC2 Elastic Cloud
+
+###  EC2 Purchasing Options
+- **On-Demand Instances**
+	- Pay, by the second with no up-front or terminating costs.
+
+- **Spot Instances**
+	- Request unused EC2 instances, which can lower your Amazon EC2 costs significantly. Generally cheapest option although not always.
+	- **Maximum price** that you are willing to pay per hour per instance.
+	- **AWS can interrupt** them when needed (Spot Instance interruption) or when spot price exceeds your max price.
+	- If your Spot instance is terminated or stopped by Amazon EC2 in the first instance hour, you will not be charged for that usage. Otherwise charged to the nearest second.
+
+- **Reserved Instances**
+	- Purchase, at a significant discount, instances that are always available, for a term from one to three years.
+
+- **Scheduled Instances**
+	- Purchase instances that are always available on the specified recurring schedule, for a one-year term.
+
+- **On Demand Capacity Reservations**
+	- Reserver Capacity for your EC2 instances in a specific Availability Zone for any duration.
+
+- **Dedicated Instances**
+	- Pay, by the hour, for instances that run on single-tenant hardware.
+
+- **Dedicated Hosts**
+	- Pay for a physical host that is fully dedicated to runnning your instances.
+
+###  EC2 Saving Plans
+- Reduced pricing in exchange for consistent usage ($/hr) over **1 or 3 year** commitment.
+- AWS **Cost Explorer** recommendations are used as basis for savings plan.
+
+	- **Compute** Saving Plans:
+
+		- Most flexible, applied to **all** instance types, size, operating system or tenancy.
+		- Up to 66 percent off On-Demand rates
+
+	- **EC2 Intance** Saving Plans:
+
+		- Applied to individual **instance family** in a **region**
+		- Up to 72 percent off On-Demand rates
+
+- Payment Options:
+
+	- **No Upfront** (monthly basis)
+	- **Partil Upfront** - lower price
+	- **All Upfront** (one payment) - lowest price
+
+- Does not provide capacity reservations.
+
+#### EC2 Instance Reserving Options
+
+![Reserving options example 1](./img/reserving-options.png)
+
+
+![EC2 Instance Types example 1](./img/instance-types-ex1.png)
+
+![EC2 Instance Types example 2](./img/ec2-bare-metal-instances-ex1.png)
+
+![EC2 Instance Types example 3](./img/burstable-performance-instances.png)
+
+![EC2 Instance Types example 4](./img/gravitation-instance-types.png)
+
+![EC2 Instance Types example 5](./img/ec2-fleet.png)
+
+![EC2 Instance Types example 6](./img/amazon-machine-images.png)
+
+![EC2 Instance Types example 7](./img/ecs-instance-states.png)
+
+![EC2 Instance Types example 8](./img/ec2-lifecycle.png)
+
+![EC2 Instance Types example 9](./img/ec2-cluster-ntworking.png)
+
+
+## EC2 Storage Options
+- **Elastic Block Store (EBS)**
+	- Most common.
+	- Replicated **wihtin AZ**
+	- EBS volumes attached at instance launch are **deleted when instance terminated.\***
+	- EBS volumes attached to a **running** instance are **not deleted** when instance is terminated but are detached with data intact*.
+
+\* Unless delete on terminate flat modified.
+
+- **Instance Store**
+	- Phisically attached to the host server
+	- Data **NOT LOST** when OS is **rebooted**.
+	- Data **LOST** when:
+
+		- Underlying **drive fails**
+		- Instance is **terminated**
+	- Do not rely on for valuable, long-term data.
+	- You **cannot detach** and attach to another instance.
+
+### Storage settings
+
+- **General Purpose SSD (gp2)**
+	- default choice
+
+- **Provisioned IOPS SSD (io1)**
+	- Consistent and low-latency performance
+	- I/O intensive applications such as large relational or NoSQL databases
+
+- **Cold HDD (sc1)**
+	- **Lowest cost per gigabyte**
+
+- **Throughput Optimized HDD**
+	- Low cost per gigabyte
+	- Frequently accessed workloads
+
+- **EBS Snapshots**
+	- Point in time backup of EBS volume to Amazon S3.
+	- Incremental backup.
+	- Can be copied to other regions or accounts.
+
+- **EBS Encryption**
+	- AWS Key Management Service (KMS) master keys or Customer Master Key (CMK).
+	- Data stored at rest encrypted (including snapshots created) as well as data in transit between EBS and EC2.
+
+	![EC2 Instance Types example 10](./img/remove-connection-ec2.png)
