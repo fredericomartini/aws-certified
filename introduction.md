@@ -977,3 +977,88 @@ A federated user identified an IAM as "Bob": `arn:aws:sts::123456789012:federate
 	- Data stored at rest encrypted (including snapshots created) as well as data in transit between EBS and EC2.
 
 	![EC2 Instance Types example 10](./img/remove-connection-ec2.png)
+
+
+## Criando um NodeJS Server e Custom AMI
+- Após a criação de uma instância, é necessário fazer redirecionamento de portas e liberações nas regras de firewall como segue:
+
+Redirecionamento de portas, entrada na porta `80` será redirecionado p/ `8080`:
+```shell
+sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+```
+
+Aceitar tráfego na porta 80:
+```shell
+sudo iptables -A INPUT -p tcp -m tcp --sport 80 -j ACCEPT
+```
+
+Adicionar regra de saída:
+```shell
+sudo iptables -A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT
+```
+
+### Instalação de NodeJS
+
+Baixar o gerenciador de versões node
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+```
+
+Instalar nvm
+```bash
+. ~/.nvm/nvm.sh
+```
+
+Instalar NodeJS
+```bash
+nvm install node
+```
+
+Verificar se foi instalado
+```bash
+node -e "console.log('Running Node.js ' + process.version)"
+```
+
+#### Instalação de pacotes básicos
+
+Express
+```node
+npm i -g express
+```
+
+Git
+```bash
+yum -y install git htop
+```
+
+Repo de testes
+```bash
+git clone https://github.com/BackSpaceTech/node-js-sample.git
+```
+
+Dependências
+```bash
+npm i
+```
+
+Rodar mostrando logs
+```bash
+DEBUG=node-js-sample:* npm start
+```
+
+### Criação um AMI após configuração de pacotes
+- Para fazer a criação de uma AMI é necessrio clicar com o direito sobre a instấncia
+
+	![EC2 AMI example 1](./img/ima-ex1.png)
+
+	![EC2 AMI example 2](./img/ami-name-ex2.png)
+
+
+### Copiar AMI para outra origem
+- Dessa forma é possível ter acesso a mesma em outra Region
+
+	![EC2 AMI example 3](./img/copy-ami-ex3.png)
+
+	![EC2 AMI example 4](./img/copy-ami-ex4.png)
+
+- Após esse processo caso queria subir em uma nova instấncia serviço, basta selecionar imagem, configurações normais p/ máquina e após logar nela fazer redirecionamento de portas (NOVAMENTE)
