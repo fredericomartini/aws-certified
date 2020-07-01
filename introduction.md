@@ -1062,3 +1062,69 @@ DEBUG=node-js-sample:* npm start
 	![EC2 AMI example 4](./img/copy-ami-ex4.png)
 
 - Após esse processo caso queria subir em uma nova instấncia serviço, basta selecionar imagem, configurações normais p/ máquina e após logar nela fazer redirecionamento de portas (NOVAMENTE)
+
+
+### EC2 - Storage EBS
+- STEPS:
+
+	- Criar uma instância com um volume extra EBS
+		- Ao criar uma instância, selecionar a opção para adicionar uma unidade extra de espaço.
+		- Após instância subir e logar dentro da máquina é possível ver os discos através do comando:
+
+			```bash
+			lsblk
+			```
+
+			![EC2 EBS example 1](./img/ec2-ebs-ex1.png)
+
+			Por padrão volume não tem ponto de montagem, nem um sistema de arquivos, é preciso fazer manualmente
+
+			Verificar sistema de arquivos e partição
+			```bash
+			sudo file -s /dev/xvdb
+			```
+			`data` quer dizer que não existe um sistema de arquivos nem partição definido.
+
+			![EC2 EBS example 2](./img/ec2-ebs-ex2.png)
+
+	- Criar um sistema de arquivos
+
+		```bash
+			sudo mkfs -t ext4 /dev/xvdb
+		```
+
+		Sistema de arquivos `ext4` criado
+
+		![EC2 EBS example 3](./img/ec2-ebs-ex3.png)
+
+	- Montar dentro da EC2
+		- Criar diretório para montagem
+
+			```bash
+				sudo mkdir /data
+			```
+
+		- Montar volume EBS na pasta em questão
+
+			```bash
+				sudo mount /dev/xvdb /data
+			```
+
+		- Adicionar montagem automática do volume no boot
+
+			```bash
+				sudo vim /etc/fstab
+			```
+
+			Adicionar linha para novo sistema de arquivos e pasta onde vai ser montado
+			```bash
+				UUID=61f0cee3-8088-42f6-8572-6c9a40f9a43a	/	ext4	defaults,nofail	0 2
+			```
+	- Criar um snapshot do volume
+		Acessar volume
+		![EC2 EBS example 4](./img/ec2-ebs-ex-4.png)
+
+		- Criar snapshot do mesmo
+
+		###	OBS:
+		Uma nova instấncia que utilizar o snapshot do volume criado, não terá os dados salvos caso tenha sido selecionado a opção de não manter dados.
