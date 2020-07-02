@@ -1128,3 +1128,43 @@ DEBUG=node-js-sample:* npm start
 
 		###	OBS:
 		Uma nova instấncia que utilizar o snapshot do volume criado, não terá os dados salvos caso tenha sido selecionado a opção de não manter dados.
+
+
+# Elastic Container Service (ECS)
+- Elastic Container Registry (ECR)
+- ECS Tasks
+- Deployment on EC2 & Serverless
+- ECS Services
+
+
+#### Amazon Elastic Container Registry
+- Fully-managed Docker container registy
+- **Encrypted** at rest and in transit
+- Access controlled with **IAM** ussers and roles
+- Highly Available
+- Simplified integration with ECS
+
+#### Task Definition
+- **Json** file
+- Specifies **parameters** for your application:
+
+	-Lauch type (EC2 or serverless), ports, Docker image, data volumes, IAM roles etc.
+- You can define **multiple containers** in a task definition.
+- Your **application** can span **multiple task definitions**
+- How much CPU and memory to use with each task or each container within a task.
+
+#### ECS Taks
+![ECS example 1](./img/ecs-tasks-ex1.png)
+
+#### Deployment on EC2 & Serverless
+![ECS example 2](./img/ecs-tasks-ex2.png)
+
+#### ECS Services
+- Run and maintain a specified number of instances of a task definition simultaneously in an Amazon ECS cluster
+- Failed or stopped tasks will be **replaced** according to your **desired count** of tasks
+- Services can also be run behind a load balancer
+
+#### Exemplo de preços utilizando fargate
+- 3GB RAM/mês: $ 9,6012
+- 1 VCPU/mês: $ 29,1456
+- Total R$: 205
