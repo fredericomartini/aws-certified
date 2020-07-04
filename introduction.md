@@ -1168,3 +1168,110 @@ DEBUG=node-js-sample:* npm start
 - 3GB RAM/mês: $ 9,6012
 - 1 VCPU/mês: $ 29,1456
 - Total R$: 205
+
+### Exemplo de template AWS Cloudformation para disponibilizar container para ECS.
+[Github](https://gist.github.com/tkgregory/414ced52597cf7a46c380adfff2d8a3e)
+
+[Youtube](https://www.youtube.com/watch?v=fCUDwn_LO5Y)
+
+- An example CloudFormation template for deployment of a container to ECS.:
+```yaml
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  SubnetID:
+    Type: String
+Resources:
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: deployment-example-cluster
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: deployment-example-log-group
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: deployment-example-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+  ContainerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ContainerSecurityGroup
+      GroupDescription: Security group for NGINX container
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: deployment-example-task
+      Cpu: 256
+      Memory: 512
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref ExecutionRole
+      ContainerDefinitions:
+        - Name: deployment-example-container
+          Image: nginx:1.17.7
+          PortMappings:
+            - ContainerPort: 80
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref AWS::Region
+              awslogs-group: !Ref LogGroup
+              awslogs-stream-prefix: ecs
+      RequiresCompatibilities:
+        - EC2
+        - FARGATE
+  Service:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: deployment-exmaple-service
+      Cluster: !Ref Cluster
+      TaskDefinition: !Ref TaskDefinition
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            - !Ref SubnetID
+          SecurityGroups:
+            - !GetAtt ContainerSecurityGroup.GroupId
+```
+
+- Criação de stack (create-stac):
+```yaml
+aws cloudformation create-stack \
+--stack-name example-deployment \
+--template-body file://./ecs.yml \
+--capabilities CAPABILITY_NAMED_IAM \
+--parameters 'ParameterKey=SubnetID,ParameterValue=subnet-1881f750'
+```
+
+- Atualização de stack (update-stack):
+```yaml
+aws cloudformation update-stack \
+--stack-name example-deployment \
+--template-body file://./ecs.yml \
+--capabilities CAPABILITY_NAMED_IAM \
+--parameters 'ParameterKey=SubnetID,ParameterValue=subnet-1881f750'
+```
+
+- Remoção de stack (delete-stack):
+```yaml
+aws cloudformation delete-stack --stack-name example-deployment
+```
+
+# Terminar videos sobre ecs
+ Seguir em: EFS
