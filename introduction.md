@@ -1273,5 +1273,88 @@ aws cloudformation update-stack \
 aws cloudformation delete-stack --stack-name example-deployment
 ```
 
-# Terminar videos sobre ecs
- Seguir em: EFS
+#### Elastic File Service (EFS)
+
+#### O que é EFS ?
+- Simples, escalável armazenamento de arquivos para usar com instấncias EC2.
+- Armazenamento anexado em rede (NAS - Network Attached Storage).
+- Pode ser acessado por múltiplicas instâncias EC2 no mesmo tempo.
+
+![EFS example 1](./img/efs-ex1.png)
+
+#### Vantagens do EFS
+- Fully managed service.
+- File system grows and shrinks automatically to petabytes size.
+- Pay only for the storage space you use, with no minimum fee.
+- Throughput scales automatically to ensure consistent low latency
+- Can support thousands of connections.
+- Multi AZ replication.
+
+#### Desvantagens EFS
+- Not available in all regions
+- Cross region capability not available
+- More complicated to provision compared to S3 and EBS.
+
+![EFS example 2](./img/efs-ex2.png)
+
+
+#### Acessing File System from EC2
+- Requires an NFS client (standard on current Linus distributions).
+- Mount file system using the Linux mount command similar to EBS and instance store.
+- File system DNS name (easiest) or mount point DNS name can be used to mount EFS on EC2.
+
+#### EFS Security
+- IAM user permissions for create, update and delete.
+- EC2 security groups can be set as inbound rules for EFS and vice versa.
+- NACLs can be used to control traffic.
+- Linux/Unix file root-only permissions by default (CHOWN, CHMOD).
+
+
+#### Hands on
+
+- Architecture
+
+![EFS example 3](./img/efs-ex3.png)
+
+1 - Criar uma EFS [Console](https://us-east-2.console.aws.amazon.com/efs/home?region=us-east-2#/wizard/1)
+
+![EFS example 4](./img/efs-ex4.png)
+
+2 - Criar uma instấncia EC2 e informar uma das subnets criadas no EFS.
+
+![EFS example 5](./img/efs-ex5.png)
+
+3 - Criar regras no grupo de segurança para acesso ao EFS
+
+- 3.1 Copir o ID do grupo de seguranca criado
+
+![EFS example 6](./img/efs-ex6.png)
+
+![EFS example 7](./img/efs-ex7.png)
+
+- 3.2 Acessar o EFS criado e adicionar o grupo de segurança copiado.
+
+![EFS example 8](./img/efs-ex8.png)
+
+4 - Permitir tráfego de entrada (inbound) na EC2
+
+- 4.1 Acessar novamente o security group da EC2
+- 4.2 Adicionar/Editar regras de inbound
+
+	NFS => EC2
+
+![EFS example 9](./img/efs-ex9.png)
+
+- 4.3 Logar dentro da ec2 e criar uma pasta para montagem do EFS
+
+```bash
+sudo mkdir /efs-mount-volume
+```
+
+- 4.4 Fazer a montagem do EFS na pasta criada
+
+```bash
+sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-c851fdb0.efs.us-east-2.amazonaws.com:/ /efs-mount-volume
+```
+
+**fs-c851fdb0.efs.us-east-2.amazonaws.com** é o dns da NFS criada
