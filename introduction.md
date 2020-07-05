@@ -1621,3 +1621,160 @@ Será possível baixar e verificar todas as informações das modificações fei
 - 99.99% availability
 - Replicateas **6 copies** of your data across **3 AZs**
 - Continuosly backs up to **S3** & provides up to **35 days of point-in-time recovery** with no downtime or performance degradation.
+
+
+#### AWS Database Migration Service
+- Migrate data from:
+
+	- Oracle
+	- Microsoft SQL Server
+	- MySQL, Amazon Aurora and MariaDB
+	- PostgreSQL
+	- MongoDB
+	- SAP Adaptive Server Enterprise (ASE)
+
+- Migrate data to all of the above plus:
+
+	- Amazon Redshift
+	- Amazon S3
+	- Amazon DynamoDB
+
+Workflow:
+
+![RDS example 5](./img/rds-ex5.png)
+
+![RDS example 6](./img/rds-ex6.png)
+
+
+## Amazon DynamoDB
+- DynamoDB Features
+- Tables, Items, Attributes & Primary Keys
+- Indexes, Queries and Scans
+- DynamoDB Performance
+- DynamoDB Streams & Triggers
+- DynamoDB Accelerator (DAX)
+
+### DybnamoDB Advantages
+- **Scales seamlessly** including through **API & CLI calls** (provisioned throughput)
+- Query on any attribute (column) using secondary indexes
+- Supports cross-region replication
+- Schema-less
+- Supports strong consistency on reads
+- Atomic counters and condidional updates
+- **Downloadable version** available that you can run locally
+
+#### SQL vs NoSQL
+- SQL optmized for storage, NoSQL optimized for speed.
+- SQL data is **normalised** (relational). NoSQL is **denormalised** (hierarchical).
+- SQL data has **join and rules**.
+- SQL language is rich, NoSQL simple queries ans scans.
+- SQL scales vertically, NoSQL scales horizontally.
+- SQL suitable for Online Analytical Processing (**OLAP**), NoSQL suitable for Online Transaction Processing (**OLTP**).
+
+#### Tables, Items, Attributes & Primary Keys
+![RDS example 7](./img/rds-ex7.png)
+
+#### Secondary Indexes
+![RDS example 8](./img/rds-ex8.png)
+
+- Let you query the data using an **alternate key** in addition to primary key.
+- You specify which **attribute** will be copied, or projected.
+- Not essential but can provide improved flexibility and **speed of querying**.
+
+
+#### Local and Global Secondary Indexes
+- **Local Secondary Indexes**
+	![RDS example 9](./img/rds-ex9.png)
+	- Same partition (hash) keys as the table
+	- Different sort (range) key as the table
+
+- **Global Secondary Indexes**
+
+	- Partition and sort keys can be different from the table
+
+You can define up to 20 global secondary indexes and 5 local secondary indexes per table - for a total of 25.
+
+
+#### Query and Scan
+- **Query**
+
+	- Generally **more efficient** than a Scan operation. Searches for a specific **range of keys** that satisfy a given **set of key conditions**.
+	- Results can be filtered.
+	- Eventually consistent, but you can request a strongly consistent read.
+
+- **Scan**
+
+	- Scans the **entire table or secondary index** then filters results.
+	- Eventually consistent, but ConsistentRead set to true will return results at the time the scan started. This will consume twice the read capacity units.
+	- Larger the datase, slower the response.
+
+#### Get & Update vs Atomic Counters
+
+![RDS example 10](./img/rds-ex10.png)
+
+- Atomic Counters
+
+	- **Atomic Counters**
+
+		- **UpdateItem** operation increments or decrements the value of an attribute without interfering with other write requests.
+		- Write are applied in the order the are receive.
+		- Good for non-critical counter applications like site visits counter.
+		- Counter can increment each time you call UpdateItem whether or not call was successful.
+
+- Standard vs Conditional Updates
+
+![RDS example 11](./img/rds-ex11.png)
+
+- Conditional Updates
+
+	- **Conditional Update**
+
+		- To perform a conditional update, you use an **UpdateItem** operation with a **conditional expression.** The condition expression must evaluate to true in order for the operation to succeed; otherwise, the operation fails.
+		- Ideal for critical applications that require high accuracy of data compliance e.g. finance, ERP.
+
+#### Time To Live (TTL)
+- Define when items in a table **expire**
+- A background job checks the **TTL attribute** of items to see if they are exppired then deletes them
+- Removed from any **Secondary Indexes**
+- Reduces the cost of storing **irrelevant data**
+
+
+#### Provisioned Throughput
+- Provisioned throughput specified separately for table and its indexes.
+- Customers can purchase reserved capacity
+- **Read Capacity units**
+
+	- One read capacity unit represents one strongly consistent read per second, or two eventually consistnt reads per second, for items up to 4 KB in size.
+- **Write Capacity units**
+
+	- One write capacity unit represents one write per second for items up to 1KB in size.
+	- Secondary indexes require additional capacity units i.e. one for writing to the table and another for writing to the index.
+
+
+	- Provisioned Throughput Examples
+
+		![RDS example 12](./img/rds-ex12.png)
+
+#### DynamoDB Streams
+- **Streams**
+
+![RDS example 13](./img/rds-ex13.png)
+
+- Ordered flow of information about **changes to items** in an Amazon DynamoDB table
+- **Stream Record** created whenever an appliation creates, updates, or deletes items in a table. Assigned a sequence number.
+- Stream Records are organised into **groups (shards).
+- The stream records within a shard are **removed** automatically after **24 hours**.
+
+#### DynamoDB Triggers
+![RDS example 14](./img/rds-ex14.png)
+
+#### DynamoDB Accelerator (DAX)
+
+![RDS example 15](./img/rds-ex15.png)
+
+- Highly available, fully managed **in-memory cache** for DynamoDB
+- Delivers up to a 10x performance improvement
+
+![RDS example 16](./img/rds-ex16.png)
+
+![RDS example 17](./img/rds-ex17.png)
