@@ -1273,7 +1273,7 @@ aws cloudformation update-stack \
 aws cloudformation delete-stack --stack-name example-deployment
 ```
 
-#### Elastic File Service (EFS)
+# Elastic File Service (EFS)
 
 #### O que é EFS ?
 - Simples, escalável armazenamento de arquivos para usar com instấncias EC2.
@@ -1358,3 +1358,266 @@ sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retr
 ```
 
 **fs-c851fdb0.efs.us-east-2.amazonaws.com** é o dns da NFS criada
+
+
+# Simple Storage Service (S3)  & Glacier
+
+#### Amazon S3 Terminology
+- **Bucket**
+
+	 - Container for objects stored in S3.
+	 - Total volume of data and number of objects are **unlimited**
+	 - Bucket names must:
+
+		 - Be unique
+		 - Be at least 3 and no more than 63 characters long.
+		 - Cannot be an ip address format
+		 - Be lowercase
+		 - must not contain uppercase characters or underscores
+	- Objects
+
+		- Entities (data and metadata) stored in a bucket.
+		- 0 bytes to amaximum of **5 TB**.
+		- Largest object upload is **5 TB**.
+		- **Multi-part upload** for 100MB to 5TB
+
+#### Web Store
+- **S3 is a Web store not a file system**
+
+	- **Eventually consistent** - Index updated after data changes synchronised across multi-az.
+	- **Read after write consistency** with **new objects** synchronised across multi-az before indexed and success returned.
+
+Upload new object => Synchronized => S3 Index Updated => Success Returned
+
+- **Updates (overwrite puts) and deletes** not read after write/delete consistent they are **eventually consistent**.
+
+Update or delete object => Success Returned => Synchronized => S3 Index Updated
+
+
+#### Secure by Default
+- **S3 is secure by default but can be modified through:**
+
+	- **IAM Policies** roles, users and groups (fine grained control).
+	- **Bucket Policies** applied at the bucket level (fine grained control).
+	- **Acess Control Lists (ACL)** applied at the bucket and/or object level.
+
+![S3 example 1](./img/s3-ex1.png)
+
+- **S3 Intelligent-Tiering**
+
+	- Same features as Standard - Infrequent Access (IA) **without retrieval fee**
+	- Automatically moves objects between **two access tiers** (frequent and infrequent access)
+	- Objects that have not been accessed for **30 days** moved to the infrequent access tier.
+	- Small monthly monitoring and automation **fee**
+
+- **Object level Configuration**
+
+	- A single bucket can contain objects stored in S3 Standard, S3 Intelligent-Tiering, S3 Standard-IA, and S3 One Zone-IA.
+
+### S3 Performance
+- Partitions are based upon **key prefix**
+- 3,500 write & 5,500 read requests per second **per prefix** in a bucket. e.g. 5 prefixes provides **parallelized** reads to 27,500 read requests per second.
+
+	![S3 example 2](./img/s3-ex2.png)
+
+### Amazon S3 Glacier
+- Archiving solution
+- **Lowest cost** AWS object storage class
+- 99.999999999% of durability across 3 AZs
+- 3 retrieval options:
+
+	- **Expedited** (1-5 minutes)
+	- **Standard** (3-5 hours)
+	- **Bulk** (5-12 hours)
+
+### LifeCycle Management
+
+![S3 example 3](./img/s3-ex3.png)
+
+- Object **Deletion** after expiry time
+- Object **Archiving** to **Glacier** after expiry time
+- Can be restored from Glacier back to S3
+
+
+### S3 Versioning
+- Preserves copies of objects inside a bucket.
+- Individual objects can be **restored** to previous versions.
+- **Deleted** objects can be **recovered**.
+
+
+### S3 Cross Region Replication
+- **Reduced latency** for end users
+- Both source and destination buckets need versioning enabled if using versioning
+- ACL details updated
+
+	- **S3** enabled **encryption replicated**
+	- **KMS** encryption **not replicated**
+
+- Need to copy existing objects to new region
+- Replication always takes place betwen a **pair of AWS regions**.
+- Buckets can be source buckets for another cross region replication.
+
+
+#### Hands On S3
+#### Versionamento e Regras de ciclo de vida
+
+	1 - Criar um novo bucket, selecionar opção (Keep all versions of an object in the same bucket.) [Ler mais](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-versioning.html)
+
+	- 1.1 Fazer upload de um arquivo
+	- 1.2 Modificar arquivo e fazer upload do arquivo novamente
+
+Será possível baixar e verificar todas as informações das modificações feitas no arquivo (versões)
+![S3 example 4](./img/s3-ex4.png)
+
+#### OBS:
+- 1 Para restaurar a penúltima versão, só precisa remover a última
+- 2 Caso um arquivo seja removido (não o versionado, mas o arquivo principal) ainda assim é possível recuperar através do controle de versão.
+
+#### Regras de ciclo de vida
+
+- 1 Acessar opção "Management" do bucket, "Add lifecycle rule"
+
+	![S3 example 5](./img/s3-ex5.png)
+
+	![S3 example 6](./img/s3-ex6.png)
+
+	![S3 example 7](./img/s3-ex7.png)
+
+	![S3 example 9](./img/s3-ex9.png)
+
+
+### S3 Bucket Policies and ACLs
+- Bucket Policies
+
+	- Aplicadas a nível de bucket
+	- Replicadas para todos objetos
+
+- ACL
+	- Aplicada a nível de bucket e objetos
+
+
+# Databases on AWS
+- RDS Backup, Failover and Replication
+- Amazon Aurora
+- DynamoDB
+- Amazon Neptune
+- Amazon Redshift
+- Amazon ElasticCache
+- Amazon DocumentDB
+
+
+### What is Amazon RDS
+- Managed relational database service
+- PostgreSQL, MySQL, MariaDB, Oracle, Microsoft SQL Server and Amazon Aurora
+- PaaS servcie - Handles routine database tasks such as provisioning, patching, bacup, recovery, failure detection, and repair
+
+### RDS Backup
+![RDS example 1](./img/rds-ex1.png)
+
+- **User initiated** DB Snapshots of instance
+- **Automated** DB backups to S3
+
+	- Deleted by default when  instance terminated
+	- Disable by setting backup retention period to 0
+
+- **Encryption** of database and snapshots at rest available
+
+
+### RDS Multi-AZ
+![RDS example 2](./img/rds-ex2.png)
+
+- Multi-AZ recommended for **production applications
+- **Application** should also be located in multiple AZ's
+- Available for **all database types**
+- Allows **failover** to standby
+
+
+### RDS Read Replicas
+![RDS example 3](./img/rds-ex3.png)
+
+- Supported for Aurora, PostgreSQL, MySQL, and MariaDB
+- **Multiple** read replicas (up to 15 for Aurora)
+- **Cannot** be put behind AWS **ELB**. (Use Aurora Cluster, software, Route 53 routing or HaProxy)
+
+
+### Amazon Aurora
+- **MySQL** and **PostgreSQL**- compatible. 1/10th the cost of commercial database
+- Up to 5 times faster than standard MySQL, 3 times faster than standard PostgreSQL.
+- **Clusters** of instances with a **single reader endpoint**, load balanced by Aurora service.
+- Scale performance up and down
+
+	- Vertically - changing instance size
+	- Horizontally - 15 read replicas
+- **Aurora Serverless**
+
+	- Suitable for infrequent, intermittent, or unpredictable workloads.
+	- Pay by the second. Shuts down when not needed
+
+
+### Amazon DynamoDB
+- **NoSQL** database
+- Consists of:
+
+	- **Tables** e.g. Persons
+	- **Attributes** e.g. FirstName, LastName, Email, Website
+	- **Items** e.g. Persons table contains items of individual people
+	- **Partition Key** and optional **Sort Key** defined for access to items
+
+	Table people
+	```json
+	{ "FirstName": "Bill", "LastName": "Smith", "Email": "bs@domain.com", "Website": "domain.com" },
+	{ "FirstName": "Joe", "LastName": "Bloggs", "Email": "jb@domain.com", "Website": "domain.com" }
+	```
+
+#### DynamoDB Provisioned Capacity
+- Specify the number of **reads and writes per second** that you expect your application to require.
+- Autoscaling can adjust capacity based upon demand.
+- Use cases:
+
+	- Predicatable traffic
+	- Traffic is consistent or ramps gradually.
+	- Capacity requirements can be forecast to control costs.
+
+#### DynamoDB On-Demand
+- Flexible billing option
+- Instantly accommodates your workloads as they ramp up or down
+- Serve thousands of requests per seconds whithout capacity planning
+- Simple **pay-per-request** pricing for **read and write requests**
+- Use on-demand capacity mode for both **new and existing** tables
+
+
+### Amazon Neptune
+- Purpose-built to store and navigate relationships
+- Uses graph structures:
+
+	- **nodes** (data entities),
+	- **edges** (relationships), and
+	- **properties** to represent and store data
+
+- Graph query languages:
+
+	- Gremlin
+	- SPARQL
+
+
+### Amazon Redshift
+- Fully managed, big data (**petabyte-scale) warehouse service
+- Based on **PostgreSQL**.
+- Specifically designed for (OLAP) and (BI) applications, which require complex queries against large datasets.
+- Redshift cluster is a set of nodes, which consists of a leader node and one or more compute nodes.
+- Choice of type and size for nodes.
+
+
+### Amazon ElasticCache
+- Fully managed, **in-memory** data store service.
+- Low latency data access for popular content.
+- **Redis** or **Mencached** engine.
+
+	![RDS example 4](./img/rds-ex4.png)
+
+### Amazon DocumentDB
+- **MongoDB** compatible
+- Launched as instances in a cluster. Up to 16 instances (1 primary, 15 replicas)
+- 99.99% availability
+- Replicateas **6 copies** of your data across **3 AZs**
+- Continuosly backs up to **S3** & provides up to **35 days of point-in-time recovery** with no downtime or performance degradation.
