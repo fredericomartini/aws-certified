@@ -1778,3 +1778,31 @@ You can define up to 20 global secondary indexes and 5 local secondary indexes p
 ![RDS example 16](./img/rds-ex16.png)
 
 ![RDS example 17](./img/rds-ex17.png)
+
+
+# Virtual Private Cloud (VPC)
+
+![VPC example 1](./img/vpc-ex1.png)
+
+#### Main Requirements for Internet Connectivity
+- 1 - EC2 instance has a **Public IP address**
+- 2 - VPC has an **Internet Gateway**
+- 3 - **Route** defined in a route table from **subnet to IGW**
+
+#### VPC Security
+![VPC example 2](./img/vpc-ex2.png)
+
+- Security groups
+
+	- Firewall at the instance level
+	- Statefull
+
+- Netwwork access control lists (ACLs)
+
+	- Firewall at the subnet level
+	- Network ACLs as a second layer of defense
+	- Stateless
+
+- Flow logs
+
+	- Capture information as CloudWatch logs
