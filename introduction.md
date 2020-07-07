@@ -1806,3 +1806,139 @@ You can define up to 20 global secondary indexes and 5 local secondary indexes p
 - Flow logs
 
 	- Capture information as CloudWatch logs
+
+# Advanced Virtual Private Cloud (VPC)
+- Subnet Addressing
+- Connectin to a VPC
+- Route Tables
+- Public and Private Subnets
+- Network Address Translation (NAT)
+- VPC Security
+
+
+### VPC Subnets
+![VPC example 3](./img/vpc-ex3.png)
+
+#### TCP/IP Subnet Addressing
+TCP/IP (v4) address is a **32bit**, binary number that is represented as **four bytes** converted to decimal.
+
+![VPC example 4](./img/vpc-ex4.png)
+
+
+#### Private Network Ranges
+**Private** addresss ranges are used **within your private network** as opposed to public IP addresses which are visible to the wider internet.
+
+- **Class A** Private Address = 10.0.0.0/8. If an IP address begins with the number 10, it is a class A private address.
+
+- **Class B** Private Address = 172.16.0.0/12. If an IP address begins with 172.16-31, it is a class B private address.
+
+- **Class C** Private Address = 192.168.0.0/16. If an IP address begins with 192.168, it is a class C private address.
+
+
+#### Subnet Mask
+- Defines the **IP range** of our network.
+- The 1's represent the **network portion**, and the 0's, represent the **hosts**.
+- **Amazon reserves** the **first 4** IP addresses and the **last 1 IP** addresss of every subnet for IP networking purposes.
+E.g. Network IP Address 192.168.1.0 and Subnet Mask: 255.255.255.0
+
+![VPC example 5](./img/vpc-ex5.png)
+
+![VPC example 6](./img/vpc-ex6.png)
+
+
+#### Classless Inter-Domain Routing (CIDR) Notation
+- Shorthand notation defines the number of **network portion bits**.
+- The **larger the number**, the **less addresses** available for hosts.
+
+![VPC example 7](./img/vpc-ex7.png)
+
+
+#### Subnet Mask Shorthand
+E.g. IP Address Range 172.31.16.0/20
+
+![VPC example 8](./img/vpc-ex8.png)
+
+
+#### AWS VPC Addressing
+![VPC example 9](./img/vpc-ex9.png)
+
+
+#### AWS VPC IPv4 Addressing
+- **Default VPC** is assigned a CIDR range of **172.31.0.0/16.
+
+	You are free to use other private address ranges e.g. 10.0.0.0/16
+- Amazon VPC supports VPCs **between /28 and /16** in size.
+- The **minimum** size of a **subnet** is a **/28** (or 11 available IP addresses).
+- Subnets **cannot be larger** than the VPC in which they are created.
+
+#### AWS VPC IPv6 Addressing
+- AWS VPC also supports **IPv6** addresing
+- Format is **128-bit** (8 groups of 4 hexadecimal digits).
+- **VPC** CIDR block size is fixed at **/56**
+- **Subnet** CIDR block size is fixed at /64
+- **AWS chooses** the IPv6 CIDR block for your VPC>
+- All IPv6 addresses are public.
+- **Elastic** IPv6 addresses are **not supported**.
+
+#### AWS VPC Addressing
+- To change the IP range of a vpc/subnet (e.g. /24 to /20) you must terminate your existing VPC and create a new one.
+- You can expand your existing VPC by **adding** four(4) **secondary IPv4** IP ranges (CIDRs) to your VPC.
+- You can shrink your VPC by deleting the secondary CIDR blocks you have added to you VPC.
+- You **cannot** change the size of **IPv6** address range of your VPC.
+
+#### Connecting a VPC - Internet Gateway
+![VPC example 10](./img/vpc-ex10.png)
+- Scale, redundant, and highly available VPC component
+- Provide a **target** in your VPC **route tables** for Internet-routable traffic
+- Perform **network address translation (NAT)** for instances that have been assigned public IP addresses.
+
+#### Connecting a VPC - Virtual Private Network
+![VPC example 11](./img/vpc-ex11.png)
+- **Virtual private gateway** is the VPN concentrator on the **Amazon side** of the VPN connection.
+- **Customer gateway** is a physical device or software application on **your side** of the VPN connection.
+- Each VPN connection has **two tunnels**, with each tunnel using a unique virtual private gateway public IP address. **Two Customer Gateways** can be ussed for **redundancy**.
+- Other options including AWS **Direct Connect**
+
+
+#### Route Tables
+![VPC example 12](./img/vpc-ex12.png)
+- For an instance to connect to the internet it needs:
+
+	- An **internet gateway**
+	- **Public** IP address
+	- **Custom route** table entry to the **internet gateway explicity associated** to the **subnet** containing the instance
+- **Main** route table **automatically** created when you create a VPC
+
+	- Allows **local** traffic** within VPC
+	- **Implicitly associated** to all subnets unless another route table has been explicitly associated to the subnet.
+- **Custom** route table also automatically created when you create a VPC with the VPC wizard
+
+	- Allows local traffic within VPC
+	- Creates a **route to the internet gateway**
+	- Explicitly associated to the public subnet.
+
+![VPC example 13](./img/vpc-ex13.png)
+
+![VPC example 14](./img/vpc-ex14.png)
+
+![VPC example 15](./img/vpc-ex15.png)
+
+
+## Regra de ouro!
+
+- Se estiver criando uma subrede privada é **SEMPRE** boa prática também criar uma **instância NAT** na na subrede pública ou um **NAT gateway**, caso contrário podem ocorrer problemas bem difíceis de resolver.
+
+
+ #### VPC Security
+ - **Security groups**
+
+	- Firewall at the instance level
+- **Network access control lists (ACLs)**
+
+	- Firewall at the subnet level
+- **Flow logs**
+
+	- Capture information as CloudWatch logs.
+
+
+![VPC example 16](./img/vpc-ex16.png)
