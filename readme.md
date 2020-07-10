@@ -1942,3 +1942,84 @@ E.g. IP Address Range 172.31.16.0/20
 
 
 ![VPC example 16](./img/vpc-ex16.png)
+
+
+# AWS WAF, AWS Shield & AWS Firewall
+- Distributed Denial of Service (DDDoS)
+- AWS Shield
+- WAF
+- AWS Firewall Manager
+- Penetration Testing
+
+### Distributed Denial of Service (DDoS)
+- **Denial of Service (DoS)**
+
+	- Attack to damage the availability of the site.
+	- Site is flooded with requests that consume all available resources.
+
+ - **Distributed Denial of Service (DDoS)**
+
+	- DOS attack from multiple sources.
+	- Attackers use compromised systems or fleets of controlled systems.
+	- Makes manual intervention difficult.
+
+- **DDOS Attack Classification**
+
+	- Infrastructure Layer Attacks
+	- Application Layer Attacks
+
+- **Protection Techniques**
+
+	- Reduce Attack Surface Area
+	- Plan for Scale
+	- Know what is normal and abnormal traffic
+	- Deploy WAF for Sophisticated Application attacks
+
+
+### AWS Shield
+- **AWS Shield Standard (Free)**
+
+	- Active network monitoring
+	- DDoS Protection
+	- CloudFront and Route 53 availability protection
+
+- **AWS Shield Advanced**
+
+	- Expanded protection (UDP reflection, SYN flood, DNS query flood, HTTP flood)
+	- AWS DDoS Response Team (DRT)
+	- Cost Protection (for DDoS scaling charges)
+
+![AWS Shield example 1](./img/aws-shield-ex1.png)
+
+
+### AWS Application Firewall (WAF)
+- Targeted firewall protecdtion
+- **Customizable** web security **rules** (IP addresses, HTTP headers, HTTP body. or URI strings)
+- AWS **Managed Rules** for common security threats.
+- **Deploy on:**
+
+	- CloudFront
+	- App Load Balancer
+	- EC2
+	- API Gateway
+
+#### WAF Security Automations
+- Integrate Lambda with WAF for automated security monitoring and response.
+- Implementation guide and CloudFormation template available.
+
+![AWS WAF example 1](./img/waf-ex1.png)
+
+
+#### AWS Firewall Manager
+- **Central** security management service.
+- Manage **WAF rules** across accounts and applications.
+- Streamlines application **compliance**
+- Rapid targeted response to threats.
+
+
+#### Penetration Testing
+- **Permission is required** for all penetration tests.
+- Takes up to **2 business days**.
+- Online application logged in as **root user**.
+- Permission only granted for a few services (e.g. EC2, RDS, CloudFront, API Gateway, Lambda, LighSail).
+- Not granted for all EC2 instance types.
