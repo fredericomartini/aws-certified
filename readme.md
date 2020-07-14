@@ -2023,3 +2023,74 @@ E.g. IP Address Range 172.31.16.0/20
 - Online application logged in as **root user**.
 - Permission only granted for a few services (e.g. EC2, RDS, CloudFront, API Gateway, Lambda, LighSail).
 - Not granted for all EC2 instance types.
+
+
+# CloudFormation
+- What is CloudFormation ?
+- Template Structure
+- Template Sections
+- StackSets
+- CloudFormer
+- CloudFormation Designer
+
+#### What is CloudFormation ?
+- Infrastructure as **code** (JSON or YAML templates).
+- **Version control** capability
+- Template describe all the AWS resources and CloudFormation takes care of provisioning and configuring.
+
+#### Tempalte Sections
+- **Format Version** template conforms to.
+- **Description** must always follow Format Version.
+- **Metadata** JSON objects and keys that provide additional info.
+- **Parameters** allow values to be passed at stack creation.
+- **Mappings** match keys to to corresponding name value pairs.
+- **Transform** optional transforms such as SAM, snippets
+- **Outputs** declares output values
+- **Resources** declares the resources to be included
+- **Conditions** define when a resource can be created or a property defined.
+
+
+#### StackSets
+- **StackSets** allows you to create stacks across **regions** and in multiple **accounts**
+- **Administrator Account** is where stack set was created.
+- **Stack instance** is a stack created in a target account within a region.
+
+	![CloudFormation example 1](./img/cloudformation-ex1.png)
+
+#### CloudFormer
+- Creates an AWS CloudFormation template from **existing AWS resources** in your account.
+- You select resources from your account.
+
+
+#### CloudFormation Designer
+- Visual tool that provides a drag-and-drop interface for adding resources to templates.
+- Supports JSON and YAML
+
+
+#### Template Sections
+- **Parameters**
+
+	![CloudFormation example 2](./img/cloudformation-ex2.png)
+
+- **Mappings**
+
+	![CloudFormation example 3](./img/cloudformation-ex3.png)
+
+- **Tranforms**
+
+	- **AWS::Serverless** - SAM version
+	- **AWS::INCLUDE** - include code snippets
+
+	![CloudFormation example 4](./img/cloudformation-ex4.png)
+
+- **Conditions**
+
+	![CloudFormation example 5](./img/cloudformation-ex5.png)
+
+- **Resources**
+
+	![CloudFormation example 6](./img/cloudformation-ex6.png)
+
+- **Outputs**
+
+	![CloudFormation example 7](./img/cloudformation-ex7.png)
