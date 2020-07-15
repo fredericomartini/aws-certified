@@ -2094,3 +2094,109 @@ E.g. IP Address Range 172.31.16.0/20
 - **Outputs**
 
 	![CloudFormation example 7](./img/cloudformation-ex7.png)
+
+#### LAB
+- Part 1:
+
+	- Develop a CloudFormation template using a JSON editor
+	- Launch a CloudFormation stack from a template.
+
+	Template 01:
+
+	```json
+	{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "DynamoDB Lab Products Database",
+	"Parameters": {
+		"ReadCapacityUnits": {
+		"Description": "Provisioned read throughput",
+		"Type": "Number",
+		"Default": "1",
+		"MinValue": "1",
+		"MaxValue": "10000",
+		"ConstraintDescription": "must be between 1 and 10000"
+		},
+		"WriteCapacityUnits": {
+		"Description": "Provisioned write throughput",
+		"Type": "Number",
+		"Default": "1",
+		"MinValue": "1",
+		"MaxValue": "10000",
+		"ConstraintDescription": "must be between 1 and 10000"
+		}
+	},
+	"Resources": {
+		"TableOfProducts": {
+		"Type": "AWS::DynamoDB::Table",
+		"Properties": {
+			"AttributeDefinitions": [
+			{
+				"AttributeName": "Id",
+				"AttributeType": "N"
+			},
+			{
+				"AttributeName": "ProductCategory",
+				"AttributeType": "S"
+			},
+			{
+				"AttributeName": "Price",
+				"AttributeType": "N"
+			}
+			],
+			"KeySchema": [
+			{
+				"AttributeName": "Id",
+				"KeyType": "HASH"
+			}
+			],
+			"ProvisionedThroughput": {
+			"ReadCapacityUnits": {
+				"Ref": "ReadCapacityUnits"
+			},
+			"WriteCapacityUnits": {
+				"Ref": "WriteCapacityUnits"
+			}
+			},
+			"GlobalSecondaryIndexes": [
+			{
+				"IndexName": "ProductCategory-Price-index",
+				"KeySchema": [
+				{
+					"AttributeName": "ProductCategory",
+					"KeyType": "HASH"
+				},
+				{
+					"AttributeName": "Price",
+					"KeyType": "RANGE"
+				}
+				],
+				"Projection": {
+				"ProjectionType": "ALL"
+				},
+				"ProvisionedThroughput": {
+				"ReadCapacityUnits": {
+					"Ref": "ReadCapacityUnits"
+				},
+				"WriteCapacityUnits": {
+					"Ref": "WriteCapacityUnits"
+				}
+				}
+			}
+			]
+		}
+		}
+	},
+	"Outputs": {
+		"TableName": {
+		"Value": {
+			"Ref": "TableOfProducts"
+		},
+		"Description": "Test CloudFormation template for Lab"
+		}
+	}
+	}
+	```
+
+- Part 2:
+	- Set up CloudFormer using a CloudFormation Template.
+	- Create a CloudFormation Template using CloudFormer.
