@@ -1,0 +1,580 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "zonecoddarecombr": {
+      "Type": "AWS::Route53::HostedZone",
+      "Properties": {
+        "Name": "coddare.com.br."
+      }
+    },
+    "dnscoddarecombr": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonecoddarecombr"
+        },
+        "RecordSets": [
+          {
+            "Name": "coddare.com.br.",
+            "Type": "A",
+            "AliasTarget": {
+              "HostedZoneId": "Z2FDTNDATAQYW2",
+              "DNSName": "d2w1s28nrws8i.cloudfront.net"
+            }
+          }
+        ]
+      }
+    },
+    "vpcfb57b086": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "172.31.0.0/16",
+        "InstanceTenancy": "default",
+        "EnableDnsSupport": "true",
+        "EnableDnsHostnames": "true"
+      }
+    },
+    "subnet24e2fc1a": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.48.0/20",
+        "AvailabilityZone": "us-east-1e",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "subnet4261aa24": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.0.0/20",
+        "AvailabilityZone": "us-east-1a",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "subnet2af72075": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.32.0/20",
+        "AvailabilityZone": "us-east-1d",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "subnet29ae3464": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.16.0/20",
+        "AvailabilityZone": "us-east-1c",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "subnet9d890593": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.64.0/20",
+        "AvailabilityZone": "us-east-1f",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "subnet2c34e50d": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.80.0/20",
+        "AvailabilityZone": "us-east-1b",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "igw13de9468": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {}
+    },
+    "doptd31f9fa9": {
+      "Type": "AWS::EC2::DHCPOptions",
+      "Properties": {
+        "DomainName": "ec2.internal",
+        "DomainNameServers": ["AmazonProvidedDNS"]
+      }
+    },
+    "acl7cf3bd01": {
+      "Type": "AWS::EC2::NetworkAcl",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "rtb85c8aafb": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "distd2w1s28nrws8icloudfrontnet": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "Aliases": ["coddare.com.br", "www.coddare.com.br"],
+          "Comment": "coddare.com.br",
+          "DefaultRootObject": "index.html",
+          "PriceClass": "PriceClass_All",
+          "DefaultCacheBehavior": {
+            "TargetOriginId": "S3-static-site",
+            "ViewerProtocolPolicy": "redirect-to-https",
+            "MinTTL": 0,
+            "AllowedMethods": ["HEAD", "GET"],
+            "CachedMethods": ["HEAD", "GET"],
+            "ForwardedValues": {
+              "Cookies": {
+                "Forward": "none"
+              }
+            }
+          },
+          "Origins": [
+            {
+              "DomainName": "static-site.s3.amazonaws.com",
+              "Id": "S3-static-site",
+              "S3OriginConfig": {}
+            }
+          ],
+          "Restrictions": {
+            "GeoRestriction": {
+              "RestrictionType": "none",
+              "Locations": []
+            }
+          },
+          "ViewerCertificate": {
+            "SslSupportMethod": "sni-only",
+            "MinimumProtocolVersion": "TLSv1.2_2018"
+          }
+        }
+      }
+    },
+    "s3elasticbeanstalkuseast1641688696139": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        }
+      }
+    },
+    "dbsubnetdefaultvpcfb57b086": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "Created from the RDS Management Console",
+        "SubnetIds": [
+          {
+            "Ref": "subnet2c34e50d"
+          },
+          {
+            "Ref": "subnet9d890593"
+          },
+          {
+            "Ref": "subnet29ae3464"
+          },
+          {
+            "Ref": "subnet2af72075"
+          },
+          {
+            "Ref": "subnet4261aa24"
+          },
+          {
+            "Ref": "subnet24e2fc1a"
+          }
+        ]
+      }
+    },
+    "topicDefaultCloudWatchAlarmsTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "DisplayName": "Default_CloudWatch_Alarms_Topic",
+        "Subscription": [
+          {
+            "Endpoint": "fredmalmeida@gmail.com",
+            "Protocol": "email"
+          }
+        ]
+      }
+    },
+    "sgWordPressCertifiedbyBitnamiandAutomattic5420onDebian10AutogenByAWSMP": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "This security group was generated by AWS Marketplace and is based on recommended settings for WordPress Certified by Bitnami and Automattic version 5.4.2-0 on Debian 10 provided by Bitnami",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "sgdefault": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "default VPC security group",
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        }
+      }
+    },
+    "dbsgdefault": {
+      "Type": "AWS::RDS::DBSecurityGroup",
+      "Properties": {
+        "GroupDescription": "default"
+      }
+    },
+    "snspolicyDefaultCloudWatchAlarmsTopic": {
+      "Type": "AWS::SNS::TopicPolicy",
+      "Properties": {
+        "Topics": [
+          {
+            "Ref": "topicDefaultCloudWatchAlarmsTopic"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2008-10-17",
+          "Id": "__default_policy_ID",
+          "Statement": [
+            {
+              "Sid": "__default_statement_ID",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": [
+                "SNS:GetTopicAttributes",
+                "SNS:SetTopicAttributes",
+                "SNS:AddPermission",
+                "SNS:RemovePermission",
+                "SNS:DeleteTopic",
+                "SNS:Subscribe",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:Publish",
+                "SNS:Receive"
+              ],
+              "Resource": {
+                "Ref": "topicDefaultCloudWatchAlarmsTopic"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceOwner": "641688696139"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "s3policyelasticbeanstalkuseast1641688696139": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "s3elasticbeanstalkuseast1641688696139"
+        },
+        "PolicyDocument": {
+          "Version": "2008-10-17",
+          "Statement": [
+            {
+              "Sid": "eb-ad78f54a-f239-4c90-adda-49e5f56cb51e",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::641688696139:role/aws-elasticbeanstalk-ec2-role"
+              },
+              "Action": "s3:PutObject",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    "elasticbeanstalk-us-east-",
+                    "1-641688696139/resources/environments/logs/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Sid": "eb-af163bf3-d27b-4712-b795-d1e33e331ca4",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::641688696139:role/aws-elasticbeanstalk-ec2-role"
+              },
+              "Action": [
+                "s3:ListBucket",
+                "s3:ListBucketVersions",
+                "s3:GetObject",
+                "s3:GetObjectVersion"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      "elasticbeanstalk-us-east-",
+                      "1-641688696139"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      "elasticbeanstalk-us-east-",
+                      "1-641688696139/resources/environments/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Sid": "eb-58950a8c-feb6-11e2-89e0-0800277d041b",
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": "s3:DeleteBucket",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    "elasticbeanstalk-us-east-",
+                    "1-641688696139"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "alarmAlertacobrana4": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ActionsEnabled": "true",
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": "1",
+        "MetricName": "EstimatedCharges",
+        "Namespace": "AWS/Billing",
+        "Period": "21600",
+        "Statistic": "Maximum",
+        "Threshold": "4.0",
+        "AlarmActions": [
+          "arn:aws:sns:us-east-1:641688696139:Default_CloudWatch_Alarms_Topic"
+        ],
+        "Dimensions": [
+          {
+            "Name": "Currency",
+            "Value": "USD"
+          }
+        ]
+      }
+    },
+    "acl1": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": "true",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        }
+      }
+    },
+    "acl2": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        }
+      }
+    },
+    "subnetacl1": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        },
+        "SubnetId": {
+          "Ref": "subnet2af72075"
+        }
+      }
+    },
+    "subnetacl2": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        },
+        "SubnetId": {
+          "Ref": "subnet24e2fc1a"
+        }
+      }
+    },
+    "subnetacl3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        },
+        "SubnetId": {
+          "Ref": "subnet9d890593"
+        }
+      }
+    },
+    "subnetacl4": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        },
+        "SubnetId": {
+          "Ref": "subnet4261aa24"
+        }
+      }
+    },
+    "subnetacl5": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        },
+        "SubnetId": {
+          "Ref": "subnet2c34e50d"
+        }
+      }
+    },
+    "subnetacl6": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl7cf3bd01"
+        },
+        "SubnetId": {
+          "Ref": "subnet29ae3464"
+        }
+      }
+    },
+    "gw1": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        },
+        "InternetGatewayId": {
+          "Ref": "igw13de9468"
+        }
+      }
+    },
+    "route1": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb85c8aafb"
+        },
+        "GatewayId": {
+          "Ref": "igw13de9468"
+        }
+      },
+      "DependsOn": "gw1"
+    },
+    "dchpassoc1": {
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpcfb57b086"
+        },
+        "DhcpOptionsId": {
+          "Ref": "doptd31f9fa9"
+        }
+      }
+    },
+    "ingress1": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgWordPressCertifiedbyBitnamiandAutomattic5420onDebian10AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress2": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgWordPressCertifiedbyBitnamiandAutomattic5420onDebian10AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress3": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgWordPressCertifiedbyBitnamiandAutomattic5420onDebian10AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress4": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgdefault"
+        },
+        "IpProtocol": "-1",
+        "SourceSecurityGroupId": {
+          "Ref": "sgdefault"
+        },
+        "SourceSecurityGroupOwnerId": "641688696139"
+      }
+    },
+    "egress1": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgWordPressCertifiedbyBitnamiandAutomattic5420onDebian10AutogenByAWSMP"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress2": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgdefault"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    }
+  },
+  "Description": "Test template generated from infra"
+}
