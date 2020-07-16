@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  'AWS::CloudFormation::Designer':
+    96316996-8034-4ada-801c-f7b0af284761:
+      size:
+        width: 880
+        height: 410
+      position:
+        x: 36
+        'y': 46
+      z: 0
+      embeds:
+        - 0c3fa571-8db5-4f52-ac9c-0956141cdf62
+    0c3fa571-8db5-4f52-ac9c-0956141cdf62:
+      size:
+        width: 570
+        height: 350
+      position:
+        x: 50
+        'y': 90
+      z: 1
+      parent: 96316996-8034-4ada-801c-f7b0af284761
+      embeds: []
+      iscontainedinside:
+        - 96316996-8034-4ada-801c-f7b0af284761
+        - 96316996-8034-4ada-801c-f7b0af284761
+        - 96316996-8034-4ada-801c-f7b0af284761
+        - 96316996-8034-4ada-801c-f7b0af284761
+Resources:
+  PublicSubNet:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref EC2VPN
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: us-east-1a
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 0c3fa571-8db5-4f52-ac9c-0956141cdf62
+  EC2VPN:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 96316996-8034-4ada-801c-f7b0af284761
