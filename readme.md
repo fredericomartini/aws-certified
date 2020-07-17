@@ -2251,7 +2251,7 @@ Liberar acesso
 ```yaml
 	DestinationCidrBlock: 0.0.0.0/0
 ```
-Dessa forma foi criado um Internet Gateway (IGW) e uma rota da subnet para IGW. Dessa forma temos uma subnet púclica.
+Dessa forma foi criado um Internet Gateway (IGW) e uma rota da subnet para IGW. Dessa forma temos uma subnet pública.
 
 ## Adicionar uma EC2
 - Security Group
@@ -2285,20 +2285,17 @@ Condicional "DependsOn" de PublicRoute
 
 Informar tipo de instância e `AMI`:
 ```yaml
-Properties:
-	ImageId: ami-03b864241e0e8d4b1
-	InstanceType: t2.micro
-	KeyName: wordpress-aws
-	NetworkInterfaces:
-	- GroupSet:
-		- !Ref EC2SecurityGroup
-		AssociatePublicIpAddress: "true"
-		DeviceIndex: "0"
-		DeleteOnTermination: "true"
-		SubnetId: !Ref PublicSubnet
+    Properties:
+      NetworkInterfaces:
+        - GroupSet:
+            - !Ref EC2SecurityGroup
+          AssociatePublicIpAddress: 'true'
+          DeviceIndex: '0'
+          DeleteOnTermination: 'true'
+          SubnetId: !Ref EC2PublicSubnet
 ```
 
-Só fazer deploy!
+
 
 Dessa maneira temos uma ec2 "t2.micro" com wordpress público na internet.
 
