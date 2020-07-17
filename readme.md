@@ -2205,6 +2205,103 @@ E.g. IP Address Range 172.31.16.0/20
 #### Practical Lab
 - VPC Architecture Design and Deployment with CloudFormation Designer
 
+## O que é necessário para uma subnet pública
+- VPC
+- Subnet
+- Internet Gateway
+- Route Table
+- Route
+
+### VPC
+- Classless Inter-Domain Routing (CIDR)
+
+	```yaml
+		CidrBlock: 10.0.0.0/16
+		EnableDnsSupport: 'true'
+		EnableDnsHostnames: 'true'
+	```
+### Subnet
+- Classless Inter-Domain Routing (CIDR)
+
+	```yaml
+		VpcId: !Ref Id_da_Vpn_Criada (automático ao criar dentro de uma vpn)
+		CidrBlock: 10.0.0.0/24
+		AvailabilityZone: "us-east-1a"
+	```
+
+### Internet Gateway
+
+Vinculação de Internet Gateway com VPC
+![CloudFormation example 8](./img/cloudformation-ex8.png)
+
+### Route Table
+
+Vinculação de Route Table com subnet
+![CloudFormation example 9](./img/cloudformation-ex9.png)
+
+### Route
+
+Vinculação de Route com Internet Gateway
+![CloudFormation example 10](./img/cloudformation-ex10.png)
+
+Condicional "DependsOn" entre Internet Gateway/VPC Connection
+![CloudFormation example 11](./img/cloudformation-ex11.png)
+
+Liberar acesso
+```yaml
+	DestinationCidrBlock: 0.0.0.0/0
+```
+Dessa forma foi criado um Internet Gateway (IGW) e uma rota da subnet para IGW. Dessa forma temos uma subnet púclica.
+
+## Adicionar uma EC2
+- Security Group
+- EC2
+
+### Security Group
+![CloudFormation example 12](./img/cloudformation-ex12.png)
+
+Liberar acesso nas portas `80` e `22`:
+```yaml
+GroupDescription: Allow access from HTTP and SSH traffic
+SecurityGroupIngress:
+  - IpProtocol: tcp
+    FromPort: '80'
+    ToPort: '80'
+    CidrIp: 0.0.0.0/0
+  - IpProtocol: tcp
+    FromPort: '22'
+    ToPort: '22'
+    CidrIp: 0.0.0.0/0
+```
+
+Vincular o security Group com a VPC
+![CloudFormation example 13](./img/cloudformation-ex13.png)
+
+### EC2
+- Adicionar uma EC2 dentro da subnet
+
+Condicional "DependsOn" de PublicRoute
+![CloudFormation example 14](./img/cloudformation-ex14.png)
+
+Informar tipo de instância e `AMI`:
+```yaml
+Properties:
+	ImageId: ami-03b864241e0e8d4b1
+	InstanceType: t2.micro
+	KeyName: wordpress-aws
+	NetworkInterfaces:
+	- GroupSet:
+		- !Ref EC2SecurityGroup
+		AssociatePublicIpAddress: "true"
+		DeviceIndex: "0"
+		DeleteOnTermination: "true"
+		SubnetId: !Ref PublicSubnet
+```
+
+Só fazer deploy!
+
+Dessa maneira temos uma ec2 "t2.micro" com wordpress público na internet.
+
 Template 01
 ```yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -2257,7 +2354,7 @@ Resources:
 
 ```
 Imagem infra 01:
-![CloudFormation example 8](./img/EC2VPN-designer.png)
+![CloudFormation example 8](./img/EC2VPN-designer-ex1.png)
 
 
 Template final:
@@ -2591,3 +2688,16 @@ Resources:
 
 Imagem infra final:
 ![CloudFormation example 9](./img/EC2VPN-designer-ex4.png)
+
+# CloudWatch Administration
+
+![CloudWatch example 1](./img/cloudwatch-ex1.png)
+
+### CloudWatch Metrics
+- Billing
+- DynamoDB
+- EC2, EBS
+- Elastic Beanstalk
+- Opworks
+- Kinesis Firehose
+- Full list in the Developer Guide [Link](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
