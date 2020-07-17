@@ -2239,6 +2239,11 @@ Vinculação de Internet Gateway com VPC
 Vinculação de Route Table com subnet
 ![CloudFormation example 9](./img/cloudformation-ex9.png)
 
+```yaml
+	Properties:
+	  VpcId: !Ref Id_da_Vpn_Criada (deveria automático ao criar dentro de uma vpn)
+```
+
 ### Route
 
 Vinculação de Route com Internet Gateway
@@ -2258,20 +2263,22 @@ Dessa forma foi criado um Internet Gateway (IGW) e uma rota da subnet para IGW. 
 - EC2
 
 ### Security Group
+OBS: Deve ser criado fora da subnet mas dentro da VPN!
 ![CloudFormation example 12](./img/cloudformation-ex12.png)
 
 Liberar acesso nas portas `80` e `22`:
 ```yaml
-GroupDescription: Allow access from HTTP and SSH traffic
-SecurityGroupIngress:
-  - IpProtocol: tcp
-    FromPort: '80'
-    ToPort: '80'
-    CidrIp: 0.0.0.0/0
-  - IpProtocol: tcp
-    FromPort: '22'
-    ToPort: '22'
-    CidrIp: 0.0.0.0/0
+	Properties:
+  	  GroupDescription: Allow access from HTTP and SSH traffic
+	  SecurityGroupIngress:
+	  - IpProtocol: tcp
+		  FromPort: '80'
+		  ToPort: '80'
+		  CidrIp: 0.0.0.0/0
+	  - IpProtocol: tcp
+		  FromPort: '22'
+		  ToPort: '22'
+		  CidrIp: 0.0.0.0/0
 ```
 
 Vincular o security Group com a VPC
@@ -2286,6 +2293,9 @@ Condicional "DependsOn" de PublicRoute
 Informar tipo de instância e `AMI`:
 ```yaml
     Properties:
+      ImageId: ami-03b864241e0e8d4b1
+      InstanceType: t2.micro
+      KeyName: wordpress-aws
       NetworkInterfaces:
         - GroupSet:
             - !Ref EC2SecurityGroup
