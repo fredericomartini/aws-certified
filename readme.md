@@ -2205,7 +2205,7 @@ E.g. IP Address Range 172.31.16.0/20
 #### Practical Lab
 - VPC Architecture Design and Deployment with CloudFormation Designer
 
-## O que é necessário para uma subnet pública
+## O que é necessário para uma vpc com subnet pública
 - VPC
 - Subnet
 - Internet Gateway
