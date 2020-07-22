@@ -2708,3 +2708,121 @@ Imagem infra final:
 - Opworks
 - Kinesis Firehose
 - Full list in the Developer Guide [Link](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
+
+### CloudWatch Statistics
+- Average, Max, Min etc.
+- CLI - get-metric-statistcs, API - GetMetricStatistics
+
+	- maximum number of data points that can be quried is 50,850
+	- maximum number of data points returned from a single request is 1,440
+
+### Alarms
+- Billing alarms as well as resource alarms
+- Integrates with SNS
+- Three states: OK, ALARM & INSUFFICIENT_DATA
+- If a metric is above the alarm  threshold for the number of time periods
+defined by the evaluation period, an alarm is invoked.
+
+![CloudWatch example 2](./img/cloudwatch-ex2.png)
+
+
+### CloudWatch Logs
+![CloudWatch example 3](./img/cloudwatch-ex3.png)
+- Monitor, store, and access your log files from EC2 instances, CloudTrail, or otther sources.
+- Real time monitoring of log information, including
+- Log Streams - sequence of log events from a source.
+- Log Groupus - streams the same retention, monitoring, and access controll settings.
+- Metric filters - Define how information is extracted to create data points.
+- Retention settings - how long log events are kept in CloudWatch Logs.
+
+
+### CloudWatch Events
+
+#### Events
+- Occur when resources change state e.g.
+
+	- EC2 state change
+	- AutoScaling instance launch
+
+- CloudTrail integration e.g.
+
+	- API calls
+	- Log into console
+
+#### Rules:
+- Match incoming events and route them to one or more targets for processing.
+
+#### Targets:
+- Can invoke AWS Lambda functions, Amazon SNS topics, Amazon SQS queues, Amazon Kinesis Streams, or built-in targets.
+
+
+# Deployment
+![Deployment example 1](./img/deployment-ex1.png)
+- Infrastructure as Code
+- Continuos Deployment
+- Application Deployment
+- Application and Infrastructure Deployment
+- Updating Options
+- Blue-Green Deployments
+
+
+### Infrastructure as Code
+- Allows infrastructure to be managed in the same way as software.
+- Version Control
+- Examples:
+
+	- CloudFormation Templates
+	- CloudFormation Designer
+	- AMI
+
+![Infrastructure-as-code example 1](./img/infrastructure-as-code-ex1.png)
+
+
+### Continuuos Deployment - Application
+- Automated delivery of production ready code.
+- -Allows rapid deployment and roll back if necessary.
+- Examples:
+
+	- CodeCommit
+	- CodePipeline
+	- Elastic BeanStalk
+	- OpsWorks
+	- Elastic Container Service (ECS)
+
+
+### Continuuos Deployment - Application	and Infrastructure
+- Examples:
+
+	- CodePipeline
+	- CodeCommit
+	- Elastic BeanStalk
+	- OpsWorks
+	- Elastic Container Service (ECS)
+- **Hybrid Deployments** e.g. separating Application and Database, or Application and Infrastructure deployments.
+
+
+ ### Application Updating Options
+ - Prebaking AMIs
+ - In-place Upgrade
+
+	- Application updates on live Amazon EC2 instances
+- Disposable Upgrade
+
+	- Rolling out new EC2 instances and terminating older instances
+	- Allows staged deployment
+
+![Infrastructure-as-code example 2](./img/infrastructure-as-code-ex2.png)
+
+
+### Blue-Green Deployments
+- Staged rllout from existing (blue) environment while testing a new (green) one.
+- Uses domain name services (DNS) to increase traffic to green environment in stages.
+- Requires doubling up on resources.
+
+![Infrastructure-as-code example 3](./img/infrastructure-as-code-ex3.png)
+
+
+### Hands On
+- Blue Green Deployments
+- Neste mãos na massa, vamos dar uma olhada no serviço Elastic BeansTalk para lançar múltiplos ambientes e utilizar  esses ambientes para  BlueGreen deployments do código atualizado.
+- A idéia do bluegreen environment é ter a possibilidade de uma aplicação rodando em 2 instấncias e pode fazer a "troca" entre elas atualização de versões, sem downtime.
