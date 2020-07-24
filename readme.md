@@ -2826,3 +2826,54 @@ defined by the evaluation period, an alarm is invoked.
 - Blue Green Deployments
 - Neste mãos na massa, vamos dar uma olhada no serviço Elastic BeansTalk para lançar múltiplos ambientes e utilizar  esses ambientes para  BlueGreen deployments do código atualizado.
 - A idéia do bluegreen environment é ter a possibilidade de uma aplicação rodando em 2 instấncias e pode fazer a "troca" entre elas atualização de versões, sem downtime.
+
+
+### Practical LAB
+#### AWS Continuos Integration and Delivery (CI/CD)
+In this lecture we will crate, using AWS Elastic Beanstalk, a highly available and fault tolerant architect for deploying web applications. We will then create a GitHub repository to push code updates to the AWS Code Pipeline service. Code Pipeline will then deploy updates to the architecture whenever the GitHub repository is changed.
+
+![ AWS CodePipeline example 1](./img/pipeline-ex1.png)
+
+
+### AWS OpsWorks
+![ AWS OpsWorks example 1](./img/ops-works-ex1.png)
+- Configuration management platform
+- Provides more control over infrastructure design and management than EB
+- Infrastructure as code using Chef recipes for fine-grained control
+- Consists of a CM model based upon Stacks, Layers and Recipes.
+
+## Stack
+![ AWS OpsWorks example 2](./img/ops-works-ex2.png)
+- Top-level OpsWorks entity.
+- Represents a set of instances and applications that you want to manage collectively.
+- E.g  Web Server stack may contain a load balancer, server instances and database
+
+
+## Layers, Instances and Apps
+![ AWS OpsWorks example 3](./img/ops-works-ex3.png)
+ - Defines how to set up and configure instances and resources
+ - Stacks must contains one or more layers
+ - Layers must contain at least one instance
+ - Instances can be a member of multiple layers
+ - Apps represent code to run on your server
+
+
+## Scaling
+![ AWS OpsWorks example 4](./img/ops-works-ex4.png)
+- 24/7 instances added to a layer can manually start, stop or reboot the corresponding EC2 instances.
+- Automatic Scaling
+
+	- Time based instances based upon a schedule
+	- Load based instances based upon several load metric (network traffic, CPU utilization)
+- Combination of all 3 types is an effective strategy.
+
+## Deployment and Customization
+![ AWS OpsWorks example 5](./img/ops-works-ex5.png)
+
+- App and associated infrastructure is deployed automatically.
+- Chef recipes define infrastructure as code
+
+	- Customization
+	- Redeployment
+	- Version control
+	- Code reuse
