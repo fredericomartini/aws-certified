@@ -2877,3 +2877,120 @@ In this lecture we will crate, using AWS Elastic Beanstalk, a highly available a
 	- Redeployment
 	- Version control
 	- Code reuse
+
+# Advanced CloudFront
+![ Advanced CloudFront example 1](./img/advanced-cloudfront-ex1.png)
+
+## What is CloudFront?
+- Web service for high performance content delivery.
+- World-wide network of data centers (edge locations).
+- Reduces number of hops for requests.
+
+![ Advanced CloudFront example 2](./img/advanced-cloudfront-ex2.png)
+
+## Edge Locations
+### 16 Regions
+- Chose a region to optimize latency, minimise costs, or address regulatory requirements.
+
+### 42 Availability Zones
+- Insulated from failures in other Availability Zones.
+
+### 50+ Edge Locations
+- CloudFront distributions at edge locations for high performance delivery of content.
+
+![ Advanced CloudFront example 3](./img/advanced-cloudfront-ex3.png)
+
+## CloudFront Origin Server
+- Location of content to be delivered.
+- Origin server is either an S3 bucket or an HTTP server.
+- HTTP server can be on an EC2 instance.
+- Can also be on a web server you manage (web only not RTMP).
+- CloudFront must have access to origin server.
+
+## CloudFront Distribution
+- Distribution tells CloudFront which origin servers to get your files from and the TTL.
+- CloudFront assigns a domain name to your new distribution. (can be alternate domain CNAME)
+- If an edge location contains the requested file within TTL it is delivered. If not it is fetched from the origin server then delivered and cached at the edge location.
+- Distributions, or parts of, can be invalidated to force new content.
+
+
+## Delivering Dynamic Content
+### Options:
+- Low TTL
+- Do not cache dynamic content, only static:
+
+	- Not all HTTP methods are cached by CloudFront, only responses to GET and HEAD requests (although you can also configure CloudFront to cache responses to OPTIONS requests). If we use a different HTTP method, such as POST, PUT or DELETE the request will not be cached by CloudFront. CloudFront will simply proxy these requests back to our server.
+
+## CloudFront Options
+![ Advanced CloudFront example 4](./img/advanced-cloudfront-ex4.png)
+
+
+# Advanced Simple Queue Service (SQS)
+![ Advanced SQS example 1](./img/advanced-sqs-ex1.png)
+
+## What is SQS?
+- Queues for storing messages
+- Acts as a buffer of data for processing servers. SQS can smooth out the peak demand
+- Up to 10 attributes (name and value) can be added to a message additional to the message body.
+- Message size can be set from 1KB to 256KB.
+
+	<span style="display:block;text-align:center">![ Advanced SQS example 2](./img/advanced-sqs-ex2.png)</span>
+
+### Decoupling Processes
+- If average demand exceeds processing capacity, queue will grow indefinitely.
+- SQS can provide CloudWatch metrics that can be used with autoscaling.
+- Can provide upper and lower setpoints
+
+<span style="display:block;text-align:center">![ Advanced SQS example 3](./img/advanced-sqs-ex3.png)</span>
+
+## Queue Types
+
+### Standard Queue
+<span style="display:block;text-align:center">![ Advanced SQS example 4](./img/advanced-sqs-ex4.png)</span>
+
+- Default queue type.
+- Nearly-unlimited number of transactions per second.
+- Guarantee that a message is delivered at least once although rarerly duplicates
+- Best-effoort ordering
+
+### FIFO
+<span style="display:block;text-align:center">![ Advanced SQS example 5](./img/advanced-sqs-ex5.png)</span>
+
+- Complements standard type
+- Limited to 300 transactions per second (TPS)
+- FIFO (first-in-first-out) delivery
+- Exactly-once processing
+- Currently not available in all regions
+
+### Message Lifecycle
+
+![ Advanced SQS example 6](./img/advanced-sqs-ex6.png)
+
+Visibility timeout specifies the time which the message is invisible in the queue and has not been deleted.
+If message has not been deleted by the visibility timeout period, the message becomes visible and can be received again by a processing server.
+
+### Dead Letter Queues
+- Queue that can be a target for messages that cannot be processed successfully.
+- This allows them to be analysed or reprocessed later.
+- Dead letter queues must be in the same region and from the same account as queue.
+
+### Delay Queues and Message Timers
+
+#### Delay queues
+- Postpone the delivery of new messages.
+- Message is not visible when it is first added to the queue for a defined period of time.
+- Set DelaySeconds parameter with CreateQueue or SetQueueAttributes for existing queue.
+- 120,000 limit for the number of inflight messages per queue.
+
+#### Message Timers
+- Initial invisibility period for an individual message.
+- Can be created using the console or with DelaySeconds parameter of SendMessage.
+
+
+### Long Polling
+- **Short polling** send response immediately back whether or not messages in queue.
+- **Long polling** waits until a message is available in the queue before sending a response.
+- Reducues the number of empty response, when there are no messages available to return.
+- Set *WaitTimeSeconds* (ReceiveMessage) or *ReceiveMessageWaitTimeSeconds* (CreateQueue or SetQueueAttributes) parameter between 1 to 20.
+
+<span style="display:block;text-align:center">![ Advanced SQS example 7](./img/advanced-sqs-ex7.png)</span>
