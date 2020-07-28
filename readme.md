@@ -2994,3 +2994,302 @@ If message has not been deleted by the visibility timeout period, the message be
 - Set *WaitTimeSeconds* (ReceiveMessage) or *ReceiveMessageWaitTimeSeconds* (CreateQueue or SetQueueAttributes) parameter between 1 to 20.
 
 <span style="display:block;text-align:center">![ Advanced SQS example 7](./img/advanced-sqs-ex7.png)</span>
+
+
+# Simple Notification Service (SNS)
+ <span style="display:block;text-align:center">![ SNS example 1](./img/sns-ex1.png)</span>
+
+ ## What is Amazon SNS ?
+- Enables the sending of messages up to 256KB to subscribing endpoints or clients.
+- Topic name is unique and describes the endpoint for publishers to post messages.
+- Subscribers subscribe to a topic name. Subscriber access to topics determined through polices.
+
+<span style="display:block;text-align:center">![ SNS example 2](./img/sns-ex2.png)</span>
+
+## Transports Protocols
+- "HTTP", "HTTPS" - Subscribers specify a URL as part of the subscription registration; notifications will be delivered through an HTTP POST to the specified URL.
+- "Email", "Email-JSON" - Messages are sent to registered addresses as email. Email-JSON sends notifications as a JSON object, while
+Email sends text-based email.
+- "SQS" - Users can specify an SQS standard queue as the endpoint. Note that FIFO queues are not currently supported.
+- "SMS" - Messages are sent to registered phone numbers as SMS text messages.
+
+
+## Message Format
+- "Email" transport only contain the payload (message body)
+- Format for HTTP, HTTPS, Email-JSON and SQS transport protocols:
+
+	- MessageId: A Universally Unique Identifier, unique for each notification published.
+	- Timestamp: The time (in GMT) at which the notification was published.
+	- TopicArn: The topic to which this message was published
+	- Type: The type of the delivery message, set to "Notification" for notification deliveries.
+	- UnsubscribeURL: A link to unsubscribe the end-point from this topic, and prevent receiving any further notifications.
+	- Message: The payload (body) of the message, as received from the publisher.
+	- Subject: The Subject field - if one was included as an optional parameter to the publish API call along with the message.
+	- Signature: Base64-encoded "SHA1withRSA" signature of the Message, MessageId, Subject (if present), Type, Timestamp, and Topic values.
+	- SignatureVersion: Version of the Amazon SNS signature used.
+
+
+## SNS Mobile Push Notification
+High Level Steps:
+
+1 - Request Credentials from Mobile Platforms
+
+2 - Request Token from Mobile Platforms
+
+- ADM, GCM registration ID
+- APNS device token
+
+3 - Create SNS Platform Application Object
+
+4 - Create SNS Platform Endpoint Object
+
+5 - Publish SNS Message to Mobile Endpoint
+
+<span style="display:block;text-align:center">![ SNS example 3](./img/sns-ex3.png)</span>
+
+
+## ADM Setup
+Amazon Device Messaging Steps:
+
+1 - Create a Kindle Fire App with the ADM Service Enabled
+
+2 - Obtain a Client ID and Client Secret
+
+3 - Obtain an API Key
+
+4 - Obtain a Registration ID
+
+<span style="display:block;text-align:center">![ SNS example 4](./img/sns-ex4.png)</span>
+
+
+## APNS Setup
+Apple Push Notification Service Steps:
+
+1 - Create an iOS App
+
+2 - Obtain an APNS SSL Certificate
+
+3 - Obtain the App Private Key
+
+4 - Verify the Certificate and App Private Key
+
+5 - Obtain a Device Token
+
+<span style="display:block;text-align:center">![ SNS example 5](./img/sns-ex5.png)</span>
+
+
+## SNS Mobile Push Notification - GCM
+Google Clouud Messaging for Android Steps:
+
+1 - Create a Google API Project and Enable the GCM Service
+
+2 - Obtain the Server API Key
+
+3 - Obtain a Registration ID from GCM
+
+<span style="display:block;text-align:center">![ SNS example 6](./img/sns-ex6.png)</span>
+
+
+# Simple Workflow Service (SWF)
+
+<span style="display:block;text-align:center">![ SWF example 1](./img/swf-ex1.png)</span>
+
+## What is SWF ?
+- Coordinates work across distributed application components.
+- Helps implement complex business processes and application workflows.
+- Long running execution.
+- Enables complex interactions between different applications on different platforms, AWS and on-premise infrastructure and, different users.
+
+## SWF Features
+- Tasks executed with no duplicates.
+- Routing and queueing of tasks.
+- Timeout and execution status.
+- Workflows can have child workflows.
+- User data input and execution results output.
+
+## SWF Components
+- A **Workflow** is the control flow logic for the execution of tasks.
+- A **Domain** contains a workflow or workflows.
+- **Tasks** can be performed by executable code, a web service call or end user input. They can be performed in parallel or serially.
+- **Actors** interact directly with SWF to coordinate tasks.
+
+## SWF Actors
+- **Actors** can be workflow starters, decideres, or activity workers.
+- **Starters** can initiate execution of a workflow.
+- **Deciders** implement workflow logic and notify SWF of changes during workflow execution.
+- Activity **Workers** perform activity tasks of the workflow.
+
+<span style="display:block;text-align:center">![ SWF example 2](./img/swf-ex2.png)</span>
+
+## SWF Tasks
+- Must be registered using either the console or the RegisterActivityType action (API/CLI).
+- When scheduled you can specify a task list (queue).
+- Decision and Activity tasks have separate lists (queues).
+- Particular tasks can be assigned to particular activity workers through **task routing** if required.
+
+## SWF Implementation
+- Application Communication to SWF:
+
+	- SDKs
+	- SWF API HTTP POST calls
+	- Flow Framework (Java or Ruby)
+
+- SWF set up can also be achieved using the console or CLI.
+
+Exemplo de Simple Workflow Service
+
+<span style="display:block;text-align:center">![ SWF example 3](./img/swf-ex3.png)</span>
+
+
+# AWS Big Data Solutions
+
+<span style="display:block;text-align:center">![ Big Data example 1](./img/big-data-ex1.png)</span>
+
+## Big Data Services
+- Database/Storage
+
+	- Redshift
+	- DynamoDB
+	- S3
+	- RDS
+
+- Analyses
+
+	- Elastic Map Reduce (EMR)
+	- ElasticSearch
+	- QuickSight BI
+	- Amazon Machine Learning
+	- Lambda
+
+- Real Time Data
+
+	- Kinesis Streams
+
+- Third Party applications
+
+## Redshift
+- Petabyte scale data warehousing service.
+- Based upon PostgreSQL.
+- Accessed with standard BI reporting tools.
+- All data replicated between nodes in a cluster.
+- Continuosly backed up to S3 with snapshots (held for 1 to 35 days).
+- User initiated snapshots are retained upon cluster deletion.
+- Quick recovery from snapshots.
+
+## Big Data Migration
+
+### Services available:
+
+- Database snapshots to S3
+- AWS Database Migration Service
+- AWS Data Pipeline
+- AWS Snowball to S3
+
+OBS: É possível através de um job **Data Pipeline Service** migrar dados do S3 p/ um database.
+
+<span style="display:block;text-align:center">![ Big Data example 2](./img/big-data-ex2.png)</span>
+
+
+## Elastic Map Reduce (EMR)
+- Fully managed Hadoop service.
+- Apache Hadoop is an open source framework for the distributed processing of large data sets across clusters of compute instances.
+- Clusters of EC2 instances analyse data.
+- Clusters can be automatically deleted upon task completion.
+- Not suitable for:
+
+	- Small data sets
+	- ACID transaction requirements
+
+- Data Processing Frameworks:
+
+	- Hadoop MapReduce
+	- Apache Spark
+
+- Storate Options:
+
+	- Hadoop Distributed File System (HDFS) ephemeral storage.
+	- EMR File System (EMRFS) to access S3 as a file system.
+	- Local File System (EC2 instance store).
+
+<span style="display:block;text-align:center">![ Big Data example 3](./img/big-data-ex3.png)</span>
+
+## ElasticSearch
+- ElasticSearch is a real-time distributed search and analytics engine. It is the most popular enterprise search engine (Facebook, GitHub, Stack Exchange, Quora...).
+- AWS ElasticSearch is a fully managed implementation of ElasticSearch.
+- Analyse data from:
+
+	- S3,
+	- Kinesis Streams,
+	- DynamoDB Streams,
+	- CLoudWatch logs
+	- CloudTrail API call logs
+
+- **Suitable** for querying and searching large amounts of data.
+- **Not Suitable** for:
+
+	- Online transaction processing (OLTP)
+	- Petabyte storage (consider using self managed EC2)
+
+<span style="display:block;text-align:center">![ Big Data example 4](./img/big-data-ex4.png)</span>
+
+
+## QuickSight
+- Business Intelligence (BI) reporting service.
+- Super-fast, Parallel, In-memory, Calculation Engine (SPICE).
+- 1/10 cost of traditional BI software.
+
+<span style="display:block;text-align:center">![ Big Data example 5](./img/big-data-ex5.png)</span>
+
+
+## Amazon Machine Learning
+- Predictive analytics and machine-learning simplified with visualization tools and wizards.
+- Data sources:
+
+	- S3
+	- RedShift
+	- RDS (MySQL)
+
+- **Suitable** to:
+
+	- flag suspicious transactions
+	- forecast product demand
+	- personalize application content
+	- predict user activity
+	- analyze social media
+
+- **Not Suitable** for:
+
+	- Very large data sets
+	- Unsupported learning tasks
+
+- Consider EMR to run Spark and MLib
+
+
+## Kinesis
+- Data can be put into streams using:
+
+	- API calls (HTTP PUT)
+	- SDK
+	- **Amazon Kinesis Producer Library** (KPL) C++ application
+	- **Kinesis Agent** java application
+
+- **Kinesis Client Library** (KCL) can be used to process data already in a stream
+
+	- java
+	- Node.js
+	- .NET
+	- Python
+	- Developing an Amazon Kinesis Client Library Consumer in Ruby
+
+- **Kinesis Firehose** can capture, transform, and load streaming data into Amazon Kinesis Analytics, Amazon S3, Amazon Redshift, and Amazon Elasticsearch Service.
+
+- **Suitable** for
+
+	- Real-time data analytics
+	- Log and data feed intake and processing
+	- Real-time metrics and reporting
+
+- **Not Suitable** for
+
+	- small scale consistent throughput
+	- Long-term data storage and analytics
