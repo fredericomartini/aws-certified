@@ -3293,3 +3293,96 @@ OBS: É possível através de um job **Data Pipeline Service** migrar dados do S
 
 	- small scale consistent throughput
 	- Long-term data storage and analytics
+
+
+# AWS API Gateway
+
+<span style="display:block;text-align:center">![ API Gateway example 1](./img/api-gateway-ex1.png)</span>
+
+
+## What is AWS API Gateway?
+- Acts as a secure "front door" for applications to access data, business logic, or functionality from your back-end services.
+- Serverless - A simple, flexible, fully managed, pay-as-you-go service that handles all aspects of creating and operating robust APIs for application back ends.
+
+<span style="display:block;text-align:center">![ API Gateway example 2](./img/api-gateway-ex2.png)</span>
+
+Exemplo de serverless api
+<span style="display:block;text-align:center">![ API Gateway example 3](./img/api-gateway-ex3.png)</span>
+
+## Lab:
+- Creating a REST API with AWS API Gateway
+- In this lecture we will use the AWS API Gateway example to create a REST API. We will then send requests to the API and view responses.
+
+
+# Advanced ElasticCache
+
+<span style="display:block;text-align:center">![ Advanced ElasticCache example 1](./img/advanced-elastic-cache-ex1.png)</span>
+
+## What is AWS ElasticCache ?
+- Managed in-memory cache service.
+- Key values stores.
+- Provides ultra-fast (sub-millisecond latency) access to cached data.
+- Redis and Memcached data store options.
+- Reduces load on database.
+- Multi-AZ capability.
+- Use:
+
+	- High request rates required
+	- Low volume of regularly accessed data
+	- Low latency
+
+## Memcached
+- Free & open source project, high-performance, distributed memory object caching system.
+- Simple data types. Data structure is a string or object up to 1MB.
+- Max data volume 4.7 TiB.
+- No persistence. Lost data cannot be recovered.
+- Simple scaling by adding nodes. Data is distributed across nodes.
+- Suitable for:
+
+	- Simple data structures.
+	- Large nodes with multiple cores or threads.
+	- Scaling in/out by adding/removing nodes according to demand (elasticity).
+	- Partitioning data across multiple shards.
+	- Data caching
+
+## Redis
+- Free & open source project, in-memory data structure store.
+- Supports data structures such as strings, hashes, lists, sets, sorted sets with  range queries, bitmaps, hyperlogs and geospatial indexes with radius queries.
+- Key/value size up to 512MB. Max data volume 3.5 TiB
+- Persistence. Lost data can be recovered. Read replicas.
+- Very large command set available.
+- Notifications from the Redis PUB/SUB channel.
+- Use over Memcached for:
+
+	- Advanced data types
+	- Auto sorting of data
+	- Pub / sub capabilities
+	- High availability and failover
+	- Persistence.
+
+### Updating Cache
+- Database triggers (e.g. DynamoDB, mysql.lambda_async procedure, MongoDB etc) can be used to update ElasticCache using a Lambda function or EC2 instance.
+- Application can be used to update ElasticCache.
+
+<span style="display:block;text-align:center">![ Advanced ElasticCache example 3](./img/advanced-elastic-cache-ex3.png)</span>
+
+### Caching Strategies
+- Lazy Loading (Carrega dados para dentro do cache, primeiro verifica se não existe em cache, caso no, aplicação faz consulta em banco, faz cacheamento do dado e retorna o mesmo.)
+
+	- Loads data into the cache on cache miss
+	- Requires TTL for stale data
+	- Requires 3 trips on cache miss
+
+- Writes Through (Aplicação ou Triggers para quando dados são modificados em database e assim atualiza cache)
+
+	- Application or trigger event updates cache when data written to the database
+	- Requires TTL for stale data
+	- Caches infrequent accessed data
+
+- Adding TTL (time to live)
+
+	- Memcached set command expire parameter (seconds)
+	- Redis set command
+
+		- EX SECONDS - Set the specified expire time, in seconds.
+		- PX milliseconds - Set the specified expire time, in milliseconds.
