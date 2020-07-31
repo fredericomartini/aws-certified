@@ -3386,3 +3386,146 @@ Exemplo de serverless api
 
 		- EX SECONDS - Set the specified expire time, in seconds.
 		- PX milliseconds - Set the specified expire time, in milliseconds.
+
+
+# Amazon Kinesis
+- Kinesis Data Streams
+- Kinesis Video Streams
+- Kinesis Data Firehose
+- Kinesis Data Analytics
+
+## Kinesis Data Streams
+- Collect and process large streams of data in **real time**
+- Data can be genereated **continuuosly** by thousands of data sources.
+- Applications process data sequentially and incrementally on a **record-by-record** basis or over **sliding time windows**
+- **Not** available on the **Free Tier**. Billed on a per-shard basis.
+- **Server side encryption** using an AWS KMS customer master key (CMK).
+
+### Benefits:
+- **Live** and continuos data processing and analysis
+- Managed service - Elasticity & Durability (**3 AZ**)
+- Process and safety **alarms**
+- **Multiple applications** can consume data from stream
+- Data retention from default **1 day**  to **7 days** (additional cost).
+
+## Kinesis Data Streams
+- **Produces** continually push data to stream
+- **Consumers** process data in real time
+- **Stream** consists of shards.
+- Each **shard** is a uniquely identified continuos sequence of **data records**.
+- Data records have a **sequence number**, **partition key** and **data blob** (up to 1MB).
+- Stream created using Management Console or **CreateStream** operation.
+
+<span style="display:block;text-align:center">![ Kinesis Data Streams example 1](./img/kinesis-data-streams-ex1.png)</span>
+
+
+## Writing to Kinesis Streams
+- Each shard can support up to **1000 PUT records per second**.
+- One shard provides a capacity of **1MB/sec** data input.
+- Number of shards required specified when stream created.
+- **Partition key** string (e.g. xyz1, xyz2 etc) specified by producer to identify which shard in the stream to write the data record to. Kinesis maps partition keys to a specific shard.
+- **Sequence number** is a unique record identifier assigned by kinesis when record created (**putRecords**).
+- **Shard Iterator** is position in shard to start reading data record.
+
+<span style="display:block;text-align:center">![ Kinesis Data Streams example 2](./img/kinesis-data-streams-ex2.png)</span>
+
+## Reading Kinesis Streams
+- Each shard can support up to 5 transactions per second.
+- One shard provides a capacity of 2MB/sec data reads.
+- **Shard iterator** specifies the shard position from which to start reading data records sequentially.
+- **ShardIteratorType**
+
+	- AT_SEQUENCE_NUMBER
+	- AFTER_SEQUENCE_NUMBER
+	- AT_TIMESTAMP
+	- TRIM_HORIZON (oldest data in stream)
+	- LATEST (newest data in stream)
+- Shard iterator is passed to **GetRecords**.
+
+- GetRecords returns:
+
+	- MillisBehindLatest
+	- NextShardIterator
+	- Array of Records
+
+		- Timestamp
+		- Data
+		- SequenceNumber
+
+<span style="display:block;text-align:center">![ Kinesis Data Streams example 3](./img/kinesis-data-streams-ex3.png)</span>
+
+## Kinesis Applications
+- Development Tools:
+
+	- AWS **SDKs**
+	- **Kinesis Client Library (KCL)** for java, Python, Ruby, .NET, NodeJS.
+	- **Kinesis Connector Library** - integrate streams with DynamoDB, Redshift, S3 & ElasticSearch
+	- **Kinesis Producer Library (KPL)** - simples combining records and writing to streams.
+	- **Kinesis Agent** is a pre-built java application to collect and send data to stream.
+	- **Kinesis Data Generator** can send test data to stream.
+
+## Scaling Kinesis
+- Resharding with **UpdateShardCount** increases or decreases the number of shards.
+
+	- Shard **split** increases shard count.
+	- Shard **merge** decreases shard count.
+- **Kinesis Client Library (KCL)** can`t initiate resharding but can **adapt** when it occurs.
+- Kinesis will handle **mapping of partition keys** to new shard count.
+- SDK application can monitor **CloudWatch** metrics and initiate resharding.
+- **Resharding Process**:
+- **OPEN**: Before a reshard operation, a parent shard is in the OPEN state.
+- **CLOSED**: After a reshard operation, records are not longer added to parent. Now added to new shards.
+- **EXPIRED**: Parent not longer accessible after stream's retention period has expired.
+
+<span style="display:block;text-align:center">![ Kinesis Data Streams example 4](./img/kinesis-data-streams-ex4.png)</span>
+
+## Kinesis Stream Throughput
+
+1 - Average record size rounded to nearest 1KB. **Sizerecords**
+
+2 - Rate of records per second. **RATErecords**
+
+3 - Incomming write bandwith KB/s (**BWwrite**) = **Sizerecords X RATErecords**
+
+4 - Number of applications consuming data concurrently. **NUMconsumers**
+
+5 - Read bandwidth KB/s (**BWread) = NUMconsumers X BWwrite
+
+6 - Number of Shards = MAX (**BWwrite/1000** or **BWread / 2000**)
+
+
+## Kinesis Video Streams
+- Stream live video from devices (including smartphones, security cameras, webcams cameras embedded in cars, drones etc) to the AWS Cloud.
+- Can also stream non-video time-serialized data (audio data, thermal imagery, depth data, RADAR data etc).
+- Data encrypted at rest.
+- Only supports MKV video format.
+- **Fragment** is a self-contained sequence of frames.
+- **PutMedia** writes fragments to stream.
+- KVS assigns **Fragment Number** and timestamps.
+- **GetMedia** reads fragments from stream at the **StartSelector** location. Returns fragments and timing information.
+
+<span style="display:block;text-align:center">![ Kinesis Data Streams example 5](./img/kinesis-data-streams-ex5.png)</span>
+
+### Kinesis Vide Streams Tools
+- Kinesis Video Streams **Producer Client** (Java & Android)
+- Kinesis Video Streams **Producer Library** (included in Producer Client)
+- Kinesis Video Streams **C++ Producer Library**
+- Kinesis Video Stream **Parser Library** for readingMKV data from streams.
+- SDKs **KinesisVideoMedia** class (only GetMedia) returns MKV data.
+
+
+## Kinesis Data Firehose
+- Delivers streaming data to destinations (e.g. S3, Redshift, ElasticSearch, Splunk).
+- No need to write applications or manage resources.
+- Data can be **transformed** using Lambda code before delivery and source can be backed up.
+- Buffers incoming streaming data before delivery. **Buffer Size** in MBs or **Buffer Interval** in seconds.
+- Server side encryption.
+
+<span style="display:block;text-align:center">![ Kinesis Data Streams example 6](./img/kinesis-data-streams-ex6.png)</span>
+
+
+## Kinesis Data Analytics
+- Process and analyze streaming data using standard **SQL**
+- Supports Amazon **Kinesis Data Firehose** (Amazon S3, Amazon Redshift, and Amazon Elasticsearch Service), AWS **Lambda**, and Amazon **Kinesis Data Streams** as destinations.
+
+<span style="display:block;text-align:center">![ Kinesis Data Streams example 7](./img/kinesis-data-streams-ex7.png)</span>
