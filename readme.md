@@ -3529,3 +3529,63 @@ Exemplo de serverless api
 - Supports Amazon **Kinesis Data Firehose** (Amazon S3, Amazon Redshift, and Amazon Elasticsearch Service), AWS **Lambda**, and Amazon **Kinesis Data Streams** as destinations.
 
 <span style="display:block;text-align:center">![ Kinesis Data Streams example 7](./img/kinesis-data-streams-ex7.png)</span>
+
+
+# AWS Serverless Platform
+- About AWS Serverless
+- Compute
+- Storage
+- Data
+- API
+- Application Integration & Orchestration
+- Analytics
+
+## What is Serverless ?
+- Allow you to build and run applicatios and services **without thinking about servers**:
+
+	- Apps don't require provisioning, maintaining, and administering servers for backend componentes
+	- Shifts more operational **responsability to AWS**.
+
+- Can be more expensive although **total cost of ownerhsip** can be lower due to less wasted resources and reduced support costs.
+
+## AWS Serverless Platform
+- **Fully managed services** that you can use to build and run serverless applications:
+
+	- Compute
+	- Storage
+	- Database
+	- API
+	- Application Integration & Orchestration
+	- Analytics
+	- Developer Tools
+
+## Microservices
+- Application is composed of **small independent services**.
+- Communicate over well-defined **APIs**
+- Can be facilitated using serverless technologies alghough can also be facilitated through containers on a server.
+- Benefits:
+
+	- Agility/developer ownership, reusable code
+	- Easy CI/CD deployment.
+	- Right sized scaling
+	- Resilient to single point failures.
+
+## AWS Serverless Application Model (SAM)
+- **Framework** for defining serverless applications to be deployed with **CloudFormation**.
+- SAM **YAML** templates are an extension of CloudFormation.
+- SAM Command Line Interface (**CLI**):
+
+	- Invoke Lambda functions
+	- Create a deployment packages (sam package)
+	- Deploy applications (sam deploy)
+
+## Compute - AWS Lambda
+- Automatically runs code in response to triggers
+- Only pay for the **compute time used**
+- Code runs in **parallel** and processes each trigger individually.
+- **Short lived raw compute** power. Cannot do everything an EC2 instance can do (e.g. web server, websocket etc).
+- Care must be taken not to introduce unnecessary complication.
+
+<span style="display:block;text-align:center">![ Serverless Application example 1](./img/serverless-ex1.png)</span>
+
+<span style="display:block;text-align:center">![ Serverless Application example 2](./img/serverless-ex2.png)</span>
