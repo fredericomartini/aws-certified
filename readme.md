@@ -3688,3 +3688,172 @@ Exemplo de serverless api
 	- Uses standard **SQL**.
 	- Result delivered in seconds.
 	- Pay **per terabyte scanned**
+
+# Preparing for the AWS Certified Cloud Practitioner Exam
+- Cloud Concepts
+- Security and Compliance
+- Technology
+- Billing and Pricing
+- Resources
+
+## Assessment Goals
+- Explain the **value ** of the AWS Cloud.
+- Understand and explain the AWS **shared responsibility model**.
+- Understand AWS Cloud **security best practices**.
+- Understand AWS Cloud **costs, economics,** and **billing** practices.
+- Describe and position the **core AWS services**, including compute, network, databases, and storage.
+- Identify AWS services for **common use cases**.
+
+## Exam Domains
+- Domain 1: **Cloud Concepts**
+- Domain 2: **Security and Compliance**
+- Domain 3: **Technology**
+- Domain 4: **Billing and Pricing**
+
+## AWS Cloud Value Proposition
+- Six **Advantages** of Cloud Computing:
+
+	- Trade capital expense for variable expense
+	- Benefit from massive economies of scale
+	- Stop guessing capacity
+	- Increase speed and agility
+	- Stop spending money running and maintaining data centers
+	- Go global in minutes
+- Allow business to focus on generating revenue.
+- Pay as you go pricing, variable cost.
+- AWS Marketplace
+
+## AWS Cloud Economics
+- **Total Cost of Ownership** (TCO) on-premises v AWS
+- AWS **Princing Calculator** (for nerly Simple Monthly Calculator)
+
+## Cloud Architecture Design Principles
+- **Design for Failure** (Multi-AZ, Multi-region)
+- **Elasticity** (Autoscaling)
+- **Loose Couupling** (SQS)
+- **AWS Well-Architected Framework design principles**:
+
+	- Stop guessing your capacity needs
+	- Test systems at production scale
+	- Automate to make architectural experimentation easier
+	- Allow for evolutionary architectures.
+	- Drive architectures using data
+	- Improve through game days
+- RDS
+
+	- Engines (MySQL, Oracle, SQL Server, PostGreSQL, MariaDB)
+	- Multi-AZ
+	- Cross region read replicas (except SQL Server, not all regions)
+
+- Relational v NoSQL. Remember EC2 is another option for databases.
+- AWS Well-Architected Framework 5 Pillars (Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization)
+
+## AWS Shared Responsibility Model
+**AWS** is responsible for "Security **of** the Clouud"
+**Customers** are responsible for "Security **in** the Cloud'
+
+<span style="display:block;text-align:center">![ AWS Shared Responsibility Model example 1](./img/aws-shared-responsibility-model-ex1.png)</span>
+
+## AWS Cloud Security and Compliance
+- VPC (Subnets, security groups (EC2), NACL, Peering, Flow Logs).
+- VPN (virtual private gateway, customer gateway device)
+- Distributed Denial of Service (DDoS) - AWS Shield, WAF, CloudFront.
+- AWS **Compliance** Program, AWS Artifact, AWS Config
+
+## AWS Access Management Capabilities
+- **Grant Least Privilege** access
+- IAM (users, group, roles, policies)
+- AWS Organizations
+- Multi Factor Authentication (MFA)
+- Account password policies (complexity, rotation/expiry)
+- Single Sign On (SSO) - AWS Single Sign-On, AWS Directory Service
+- CloudTrail
+- IAM Access Keys (CLI, SDK)
+
+	- access key ID, secret access key
+	- not to be confused with EC2 SSH key pairs.
+
+## Resources for Security Support
+- **Amazon Inspector** automated security assessment service
+- AWS **Trusted Advisor** (cost optimization, performance, security, fault tolerance, service limits)
+- AWS **Report Abuse** support
+- Penetration testing allowed for permitted services (EC2, RDS, CloudFront & others). Prohibited Activities include DDoS.
+
+## Deploying and Operating in the AWS Cloud
+- On premises & Hybrid (Snowball, Storage Gateway, DMS)
+- Deployment (Elastic Beanstalk, CodeCommit, CodePipeline, CodeDeploy, CloudFormation, OpsWorks)
+- Infrastructure as Code - CloudFormation, OpsWorks
+- AWS Software Development Kits (SDKs)
+- AWS Command Line Interface (CLI)
+
+## AWS Global Infrastructure
+- Regions, AZ, Edge Locations
+- Direct Connect
+- Global v Regional services (S3, CloudFront, Route53)
+
+## Core AWS Services
+- Object Storate (S3, Glacier) - redundancy, durability & retrieval times.
+
+	- aws.amazon.com/**s3/storage-classes**
+
+- EC2 - AMI, storage options (instance store, EBS), types
+- ELB (Classic, Application, Network)
+- CloudWatch (monitoring, alarms & CloudWatch Logs )
+
+## Other AWS Services
+- Database
+
+	- **Relational** - RDS (MySQL/MariaDB, Oracle, SQL Server, PostgreSQL), Aurora (MySQL, PostgreSQL)
+	- **NoSQL** - DynamoDB
+	- Data Warehouse - Redshift
+	- In Memory Storage - ElasticCache
+
+- **Serverless** (Lambda, S3, DynamoDB, SQS, SNS)
+- Machine Learning - Amazon Rekognition
+- Streams - Kinesis
+
+## Technology Support
+- AWS **Support** Plans (free, Developer, Business, Enterprise)
+
+	- Technical Account Managers, Phone Support, Response times
+	- Trusted Adviser
+
+- AWS **Partner Network** (Technology & Consulting)
+- AWS **Professional Services**
+- AWS **Quick Start** reference deployments (aws.amazon.com/quickstart)
+- AWS **Personal Health Dashboard** (AWS events that may impact you )
+
+## Pricing Models for AWS
+- EC2 (On-Demand, Spot, Reserved, Dedicated Host, Savings Plans). Per Second Billing (On-Demand, Reserved and Spot running Linux)
+
+	- https://aws.amazon.com/**ec2/pricing**
+
+## AWS billing and pricing Account Structures
+- AWS Organizations
+
+	- Multi Accounts
+	- Consolidated Billing
+	- Access Management
+- Cost Allocation Tags
+
+## Billing Support
+- AWS Billing Dashboard
+- AWS Cost and Usage Report
+- AWS Cost Explorer
+- AWS Budgets / CloudWatch Billing alert
+- AWS Free Support
+
+## Resources
+- aws.amazon.com/about-aws
+
+	- Solutions
+	- Global Infrastructure
+
+- aws.amazon.com/**products**
+
+	- Description of services
+
+- aws.amazon.com/**certification/certified-cloud-practitioner
+
+	- Exam guide
+	- Sample questions
