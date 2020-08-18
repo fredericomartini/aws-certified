@@ -3857,3 +3857,7 @@ Exemplo de serverless api
 
 	- Exam guide
 	- Sample questions
+
+
+# Section 2 - AWS Certified Developer Associate - Final Preparation
+### Lab Session - NodeJS Development with AWS Cloud9
