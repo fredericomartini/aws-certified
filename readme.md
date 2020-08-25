@@ -3860,4 +3860,24 @@ Exemplo de serverless api
 
 
 # Section 2 - AWS Certified Developer Associate - Final Preparation
-### Lab Session - NodeJS Development with AWS Cloud9
+- Lab Session - NodeJS Development with AWS Cloud9
+- Lab Session - Python Development with AWS Cloud9
+- Lab Session 1a - Programming SQS and SNS with NodeJS
+- Lab Session 1b - Programming SQS and SNS with Python
+- Lab Session 2a - Programming SQS and SNS with NodeJS
+- Lab Session 2a - Programming SQS and SNS with Python
+- Lab Session a - Programming DynamoDB with NodeJS
+	- Task:
+		- Ler arquivo no S3
+		- Salvar no DynamoDB
+		- Listar dados DynamoDB
+- Lab Session b - Programming DynamoDB with Python
+	- Task:
+		- Ler arquivo no S3
+		- Salvar no DynamoDB
+		- Listar dados DynamoDB
+- Lab Session a - Programming ElasticCache with NodeJS
+	- Para liberar acesso da ec2 rodando cloud9 com o cluster de Redis, é necessário criar um securityGroup, colocar a porta utilizado no Redis (6379) e a font será o `id` da securityGroup da ec2 rodando cloud9, anexar securityGroup na criação do cluster de redis.
+	- Também é necessário criar um SubnetGroup
+- Lab Session b - Programming ElasticCache with Python
+- Essentials Encryption on AWS (#Parei)
