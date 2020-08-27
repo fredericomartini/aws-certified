@@ -3881,3 +3881,156 @@ Exemplo de serverless api
 	- Também é necessário criar um SubnetGroup
 - Lab Session b - Programming ElasticCache with Python
 - Essentials Encryption on AWS (#Parei)
+
+# Encryption on AWS
+- Symmetric Encryption
+- Asymmetric Encryption
+- Key Management Service (KMS)
+- CloudHSM & Secrets Manager
+- AWS Encryption SDK
+- Encryption on AWS
+
+## Symmetric Encryption
+- **Same Key** to **encrypt** and **decrypt** data.
+- Symmetric Encryption requires sender and receiver to agree on the same key and **keep it secret**.
+- If key is intercepted in transit, or stolen, then data is compromised.
+
+## Asymmetric encryption - Two Way Lock
+<span style="display:block;text-align:center">![ Asymmetric encryption example 1](./img/asymmetric-encryption-ex1.png)</span>
+
+## Asymmetric encryption
+- Asymmetric (Public key) encryption uses a **pair of keys**
+- **Public key** for **encryption** only.
+- **Private key** for **decryption** only.
+- Public and Private key **mathematically** linked.
+
+- Anyone who has the **public** key can ** encrypt** data for the receiver.
+- **Public** is sent to **transmitter** to encrypt data.
+- **Private** key is kept with **receiver** to decrypt data.
+- Interception of public will not compromise data.
+
+
+## Exemple EC2 Secure shell (SSH)
+
+### SSH KEYS:
+- Host key - public
+- PEM file - private
+
+- 1 SSH **client initiates** a session with server (EC2)
+- 2 Host key supplied by server on connection
+- 3 Asymmetric cryptography used to verify **server identity**.
+- 4 Server generates symmetric key for **bi-derectional** encryption for the session.
+
+
+## AWS Key Management Service
+- Creates and manages encryption keys used with AWS.
+- Single master key secured by AWS (**Symmetric**).
+- Key **remains on AWS** and cannot be downloaded.
+- Automatic **key rotation** every year (default enabled).
+- **IAM users** must be given **permission** to use keys.
+- Permission can be granted to **other AWS accounts**.
+
+aws.amazon.com/kms/features
+
+## Envelope Encryption
+- **Data Key** used to encrypt data.
+- **KMS** encrypts **Data key** using a Master Key.
+- Master keys stored by AWS - **Customer Master keys** (CMKs)
+- AWS KMS supports symmetric **and** asymmetric CMKs.
+- CMKs stored in FIPS 140-2 compliant HSM.
+
+<span style="display:block;text-align:center">![ Envelope encryption example 1](./img/envelope-encryption-ex1.png)</span>
+
+## AWS CloudHSM
+- **Cloud-based** hardware security module (HSM)
+- Security Requirements for Cryptographic Modules - Federal Information Processing Standard (FIPS) **140-2 Level 3**
+- **You** control and manage your keys
+- AWS **does not** have access to your keys. Accessible only by uses you specify.
+- Runs in your own **VPC**. Accessible by your HSM client applications on EC2.
+- **Multi AZ**
+
+## AWS CloudHSM Use Cases
+- CloudHSM cluster as a **custom KMS key store** rather than the default KMS key store.
+- **Offload SSL** processing from web servers to ClouduHSM
+- Protect **private keys** used with a 3rd party certificate authority (CA).
+
+## AWS Secrets Manager
+- **Secrests:**
+- Database credentials, passwords, third-party API keys, and arbitrary text.
+- **Replace hardcoded credentials** in your code, with an API call to Secrets Manager.
+- Uses AWS KMS to encrypt secrets.
+- Secrets can be created and retrivied with the AWS console, CLI or SDK.
+- IAM permissions
+
+<span style="display:block;text-align:center">![ Secret manager example 1](./img/secret-manager-ex1.png)</span>
+
+<span style="display:block;text-align:center">![ Secret manager example 2](./img/secret-manager-ex2.png)</span>
+
+## AWS Encryption SDK / CLI
+- **Client-side** encryption library.
+- Available as an **SDK** or **CLI**. Separate from the AWS CLI and SDKs.
+- Supports only symmetric CMKs
+- Uses **envelope encryption**.
+
+<span style="display:block;text-align:center">![ AWS Encryption exemple 1](./img/aws-encryption-ex1.png)</span>
+
+<span style="display:block;text-align:center">![ AWS Encryption exemple 2](./img/aws-encryption-ex2.png)</span>
+
+## Key Management Options
+- Option 1 - **You control** everything:
+	- **Method** of encryption (e.g. AES))
+	- Key Management Infrastructure (**KMI**):
+		- Key Store
+		- Key Management (authorization)
+
+e.g. Client side encryption. You encrypt files and upload to S3.
+
+- Option 2
+	- **You control:**
+		- Method of encryption (e.g. AES)
+		- Key Management (authorization)
+
+	- **AWS controls:**
+		- Key storage
+
+e.g. Use CloudHSM to secu rely store keys in your VPC for use by your applications running on EC2.
+
+- Option 3 - **AWS controls** everything:
+	- **Method** of encryption (e.g. AES)
+	- Key Management Infrastructure (**KMI**):
+		- Key Storage
+		- Key Management (authorization)
+
+e.g. Encrypt an S3 bucket using a KMS managed key.
+
+## Encrypted Storage
+- AWS Backup
+- Amazon S3 & Glacier
+- EBS
+- EFS
+- CloudWatch Logs
+- Snowball
+- Storage Gateway
+- CloudTrail
+- CodeCommit (KMS managed keys only), CodeDeploy, CodePipeline
+
+## Encrypted Database
+- RDS
+- Aurora
+- DocumentDB
+- Neptune
+- ElastiCache
+- Database Migration Service
+- DynamoDB
+	- Server Side Encryption (encryption at rest)
+	- **DynamoDB Encryption Client** (encryption in transit and at rest)
+
+## Encrypted Services
+- Kinesis (Streams & Firehose)
+- SNS
+- SQS
+- SES
+- EMR
+- SageMaker
+
+aws.amazon.com/kms/features
