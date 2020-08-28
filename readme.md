@@ -4034,3 +4034,16 @@ e.g. Encrypt an S3 bucket using a KMS managed key.
 - SageMaker
 
 aws.amazon.com/kms/features
+
+# Essentials Lab Session - Encryption on AWS
+- Quando uma chave é criada (KMS) e utilizada em um bucket, automaticamente todos os arquivos
+desse bucket ficam criptografados, mesmo que não tenha sido selecionado a opção de criptografia na criação do mesmo.
+
+# Cognito Labs
+## Practical Lab
+- Authentication and Synchronization of JavaScript Apps with AWS Cognito
+
+In this lab we will create an AWS Cognito User Pool for users. We will then build a trust relationship with an AWS Cognito ID Pool. We will then write an application to authenticate a user in the user pool and then provide federated temporary credentials to access AWS resources. We will then use those credentials to write and sync to the AWS Cognito Sync service and also upload an object to AWS S3.
+
+
+# Seguir em Lab  Session 3 -
